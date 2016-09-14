@@ -1,0 +1,25 @@
+{
+  "name": "gist",
+  "version": "1.0.0",
+  "description": "An Alternative To Gist,Some Code Snippets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimown/gist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kimown/gist/issues"
+  },
+  "homepage": "https://github.com/kimown/gist#readme",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-preset-latest": "^6.14.0",
+    "babel-register": "^6.14.0"
+  }
+}
