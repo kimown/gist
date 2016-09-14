@@ -8,7 +8,7 @@
  */
 'use strict';
 
-let {readFile, writeFile, os}= require('./../util');
+let {readFile, writeFile, os}= require('./../../util');
 
 const CONFIG = {
     readPath: '/usr/share/dict/words',
@@ -35,41 +35,6 @@ async function main() {
     }
 
 }
-
-/**
- * promise fs read event
- * https://nodejs.org/dist/latest-v4.x/docs/api/fs.html#fs_fs_readfile_file_options_callback
- * @param path
- * @returns {Promise}
- */
-function readFile(path) {
-    return new Promise((resolve, reject)=> {
-        fs.readFile(path, (err, data) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(data);
-        });
-    })
-}
-
-
-/**
- * promise fs write event
- * https://nodejs.org/dist/latest-v4.x/docs/api/fs.html#fs_fs_writefile_file_data_options_callback
- * @param path
- * @returns {Promise}
- */
-function writeFile(path, data) {
-    return new Promise((resolve, reject)=> {
-        fs.writeFile(path, data, (err) => {
-            if (err) {
-                reject(err);
-            }
-        });
-    })
-}
-
 
 function getRandomLength() {
     let {wordLength}=CONFIG;
