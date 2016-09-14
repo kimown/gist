@@ -12,7 +12,8 @@ npm install --global babel-cli
 ``` bash
 cd /tmp
 git clone git@github.com:kimown/gist.git
+cd gist/
 npm i
-cd gist/babel-present-latest/babel-node
+cd babel-present-latest/babel-node
 babel-node index.js
 ```

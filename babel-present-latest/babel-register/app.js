@@ -27,7 +27,7 @@ async function main() {
         let data = await readFile(readPath);
         let data2str = data.toString();
         let wordsArray = data2str.split(EOL);
-        console.log(`过滤出包含字母${wordContainned}的所有单词`);
+        console.log(`过滤出包含字母${wordContainned}的所有单词,文件地址:${writePath}`);
         let wordsArrayAfterFilter = wordsArray.filter((word)=> {
             return word.toLowerCase().includes(wordContainned);
         });

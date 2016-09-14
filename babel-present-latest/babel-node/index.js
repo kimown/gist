@@ -25,7 +25,7 @@ async function main() {
         let data2str = data.toString();
         let wordsArray = data2str.split(EOL);
         let wordLength = getRandomLength();
-        console.log(`过滤出长度为${wordLength}的所有单词`);
+        console.log(`过滤出长度为${wordLength}的所有单词,文件地址:${writePath}`);
         let wordsArrayAfterFilter = wordsArray.filter((word)=> {
             return word.length == wordLength
         })
