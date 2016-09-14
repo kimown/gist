@@ -63,17 +63,14 @@ exports.request = function (options) {
         request(options, function (err, res) {
             if (err) {
                 reject(`请求发送失败，err:${err}`);
+            } else {
+                let {statusCode} = res;
+                let {body}=res;
+                resolve({
+                    ok: statusCode == 200 ? true : false,
+                    body
+                });
             }
-
-            let {statusCode} = res;
-            let {body}=res;
-            resolve({
-                ok: statusCode == 200 ? true : false,
-                body
-            });
-            // if (!error && response.statusCode == 200) {
-            //     console.log(body); // Show the HTML for the Google homepage.
-            // }
         })
     })
 }
