@@ -8,10 +8,12 @@
 
 const fs = require('fs');
 const os = require('os');
+const path = require('path')
 
 
 let request = require('request');
 let logger = require('./logger');
+let loggerfile=require('./loggerfile');
 
 
 /**
@@ -83,4 +85,15 @@ exports.request = function (options) {
  * https://nodejs.org/dist/latest-v4.x/docs/api/os.html#os_os_eol
  */
 exports.os = os;
+
+exports.rmLogFile = function () {
+    var filename = path.join(__dirname, 'created-logfile.log');
+
+    try { fs.unlinkSync(filename); }
+    catch (ex) {
+        loggerfile.info(`删除日志文件created-logfile.log失败,err　${ex}`);
+        return;
+    }
+    loggerfile.info(`删除日志文件created-logfile.log成功`);
+};
 

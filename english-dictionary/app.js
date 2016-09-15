@@ -4,10 +4,20 @@
 
 
 'use strict';
+
 let {requestUrl, playerId}=require('./../tmp/config.json');
-let {request, readFile}= require('./../util');
+let {request, readFile,rmLogFile}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
+
+rmLogFile();
+
+
+process.on('uncaughtException', (err) => {
+    console.log(`Caught exception: ${err}`);
+});
+
+
 
 const CONFIG = {
     action: {
