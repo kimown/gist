@@ -5,8 +5,8 @@
 
 'use strict';
 let {requestUrl, playerId}=require('./../tmp/config.json');
-let {request, logger, readFile}= require('./../util');
-
+let {request, readFile}= require('./../util');
+let logger = require('./../logger');
 
 const CONFIG = {
     action: {
@@ -22,8 +22,14 @@ const CONFIG = {
     numberOfWordsToGuess: null,　　　　　　　　// 一共要猜测的单词数量，默认80个
     currentGuessWord: {
         word: null,
+
+        //正在猜测第几次
+        currentGuessCount: 1,
+
+
         //　正在猜第[1,80]个单词
         totalWordCount: 1,
+
         // 这个单词已经猜错的次数，如果该次数等于　numberOfGuessAllowedForEachWord，则猜测次数已达到上限，直接nextWord
         wrongGuessCountOfCurrentWord: 0
     }
@@ -101,9 +107,9 @@ async function GiveMeAWord() {
         CONFIG.currentGuessWord.totalWordCount = totalWordCount;
         CONFIG.currentGuessWord.word = word;
         CONFIG.currentGuessWord.wrongGuessCountOfCurrentWord = wrongGuessCountOfCurrentWord;
-        await makeAGuess();
+        await makeAGuess(CONFIG);
     } else {
-        logger.error(`启动游戏失败!!!失败原因:`, res.body);
+        logger.error(`获取猜谜单词失败!!!失败原因:`, res.body);
     }
 }
 
@@ -120,7 +126,6 @@ async function makeAGuess() {
         logger.error(`第${totalWordCount}个单词: 第${totalWordCount}次猜测, 次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
         await GiveMeAWord();
     } else {
-        console.log(`${totalWordCount}`);
         logger.info(`第${totalWordCount}个单词: 第${totalWordCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
         let mostPossibleChar = getBestMatchChar();
 

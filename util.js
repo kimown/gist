@@ -11,7 +11,7 @@ const os = require('os');
 
 
 let request = require('request');
-let winston = require('winston');
+let logger = require('./logger');
 
 
 /**
@@ -58,7 +58,9 @@ exports.writeFile = function (path, data) {
  * @param options
  * @returns {Promise}
  */
+
 exports.request = function (options) {
+    logger.data('request:', options.body);
     return new Promise((resolve, reject)=> {
         request(options, function (err, res) {
             if (err) {
@@ -66,6 +68,7 @@ exports.request = function (options) {
             } else {
                 let {statusCode} = res;
                 let {body}=res;
+                logger.data('response:', body);
                 resolve({
                     ok: statusCode == 200 ? true : false,
                     body
@@ -80,15 +83,4 @@ exports.request = function (options) {
  * https://nodejs.org/dist/latest-v4.x/docs/api/os.html#os_os_eol
  */
 exports.os = os;
-
-
-exports.logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)({
-            colorize: true
-        }),
-        new (winston.transports.File)({filename: 'somefile.log'})
-    ]
-});
-
 
