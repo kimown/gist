@@ -5,12 +5,15 @@
  * Created by kimown on 16-9-15.
  */
 
-var winston = require('winston');
+'use strict';
+
+
+let winston = require('winston');
 
 //
 // Logging levels
 //
-var config = {
+let config = {
     levels: {
         error: 0,
         debug: 1,
@@ -31,12 +34,11 @@ var config = {
     }
 };
 
-var logger = module.exports = new (winston.Logger)({
+module.exports = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)({
             colorize: true
-        }),
-        // new (winston.transports.File)({filename: 'somefile.log'})
+        })
     ],
     levels: config.levels,
     colors: config.colors

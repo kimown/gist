@@ -7,6 +7,7 @@
 let {requestUrl, playerId}=require('./../tmp/config.json');
 let {request, readFile}= require('./../util');
 let logger = require('./../logger');
+let loggerfile = require('./../loggerfile');
 
 const CONFIG = {
     action: {
@@ -26,6 +27,8 @@ const CONFIG = {
         //正在猜测第几次
         currentGuessCount: 1,
 
+        //已经发送猜出去的字符
+        alreadyRequestCharAr:[],
 
         //　正在猜第[1,80]个单词
         totalWordCount: 1,
@@ -35,17 +38,19 @@ const CONFIG = {
     }
 };
 
+let initDictDB;
+
 
 async function main() {
 
-    try {
+    // try {
         await getAllWords();
         await startGame();
 
-
-    } catch (e) {
-        handleError(e);
-    }
+    //
+    // } catch (e) {
+    //     handleError(e);
+    // }
 
 }
 
@@ -103,7 +108,6 @@ async function GiveMeAWord() {
     if (ok == true) {
         let {data}=body;
         let {totalWordCount, word, wrongGuessCountOfCurrentWord}=data;
-        // logger.info(`正在猜测第 ${totalWordCount} 个单词(${CONFIG.numberOfWordsToGuess})，单词内容是　${word} ,已经猜错了　${wrongGuessCountOfCurrentWord} 次(${CONFIG.numberOfGuessAllowedForEachWord})`);
         CONFIG.currentGuessWord.totalWordCount = totalWordCount;
         CONFIG.currentGuessWord.word = word;
         CONFIG.currentGuessWord.wrongGuessCountOfCurrentWord = wrongGuessCountOfCurrentWord;
@@ -121,12 +125,15 @@ async function GiveMeAWord() {
  */
 async function makeAGuess() {
     let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
-    let {wrongGuessCountOfCurrentWord, totalWordCount, word}=currentGuessWord;
-    if (wrongGuessCountOfCurrentWord == numberOfGuessAllowedForEachWord) {
-        logger.error(`第${totalWordCount}个单词: 第${totalWordCount}次猜测, 次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
+    let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
+
+    //如果正在猜测第几次超过允许猜测的最大次数
+    if (currentGuessCount > numberOfGuessAllowedForEachWord) {
+        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
+        initCurrentGuessWordStatus();
         await GiveMeAWord();
     } else {
-        logger.info(`第${totalWordCount}个单词: 第${totalWordCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
+        logger.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
         let mostPossibleChar = getBestMatchChar();
 
         let postData = {
@@ -140,19 +147,68 @@ async function makeAGuess() {
             json: true,
             url: CONFIG.requestUrl
         });
-        let {body, ok}=res;
-        let {data}=body;
-        let {totalWordCount, word, wrongGuessCountOfCurrentWord}=data;
 
-        if (ok == true) {
-            CONFIG.currentGuessWord.totalWordCount = totalWordCount;
-            CONFIG.currentGuessWord.word = word;
-            CONFIG.currentGuessWord.wrongGuessCountOfCurrentWord = wrongGuessCountOfCurrentWord;
-            // makeAGuess();
+        setCurrentGuessStatus(res);
+        //如果单词没有全部猜对，递归调用猜词方法;否则直接nextWord
+        if(checkWordCotainAsterisks()){
+            await makeAGuess();
+        }else{
+            loggerfile.info(`-----　第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} ------`);
+            initCurrentGuessWordStatus();
+            await GiveMeAWord();
         }
     }
+}
 
+/**
+ * 初始化当前猜词状态
+ */
+function initCurrentGuessWordStatus() {
+    let {currentGuessWord}=CONFIG;
+    currentGuessWord.word=null;
+    currentGuessWord.currentGuessCount=1;
+    currentGuessWord.alreadyRequestCharAr=[];
+    //重点是这个猜词的个数+1
+    currentGuessWord.totalWordCount=++currentGuessWord.totalWordCount;
+    currentGuessWord.wrongGuessCountOfCurrentWord=0;
+}
 
+/**
+ * 判断单词是否含有*号
+ */
+function checkWordCotainAsterisks() {
+    let {currentGuessWord}=CONFIG;
+    let { word}=currentGuessWord;
+    return word.includes('*');
+}
+
+/**
+ * 判断单词中是否全部都是*号
+ */
+function checkWordAllAsterisks() {
+    let {currentGuessWord}=CONFIG;
+    let { word}=currentGuessWord;
+    return word.split('').every((v)=>{
+        return v=='*'
+    })
+}
+
+/**
+ * 针对不同的响应，更新当前的猜词状态
+ * @param res
+ */
+function setCurrentGuessStatus(res) {
+    let {body, ok}=res;
+    let {data}=body;
+    let {totalWordCount, word, wrongGuessCountOfCurrentWord}=data;
+    if (ok == true) {
+        CONFIG.currentGuessWord.totalWordCount = totalWordCount;
+        CONFIG.currentGuessWord.word = word;
+        CONFIG.currentGuessWord.wrongGuessCountOfCurrentWord = wrongGuessCountOfCurrentWord;
+        CONFIG.currentGuessWord.currentGuessCount = ++CONFIG.currentGuessWord.currentGuessCount;
+    } else {
+
+    }
 }
 
 
@@ -163,18 +219,37 @@ async function makeAGuess() {
  */
 function getBestMatchChar() {
     let {currentGuessWord, allWordsArray}=CONFIG;
-    let {word, totalWordCount}=currentGuessWord;
+    let {word, totalWordCount,alreadyRequestCharAr}=currentGuessWord;
     let wordLength = word.length;
     let allWordsArrayAfterSpecifyLenth = allWordsArray.filter((v)=> {
         return v.trim().length == wordLength && v.trim().indexOf("'") == -1;
     })
     logger.info(`第${totalWordCount}个单词: 先按照长度为 ${wordLength}　的英文单词过滤，过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
 
+    if(!checkWordAllAsterisks()){
+        allWordsArrayAfterSpecifyLenth=allWordsArrayAfterSpecifyLenth.filter((v)=>{
+            v=v.toUpperCase();
+            let flag=true;
+            word.split('').map((singleChar,k)=>{
+                if(singleChar!='*'){
+                    if(v[k]!=singleChar){
+                        flag=false;
+                    }
+                }
+            })
+            return flag;
+        })
+        logger.info(`第${totalWordCount}个单词:　由于不是全*号，按照单词内容 ${word}　过滤, 过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
+    }
+
     let objCount = {};
     allWordsArrayAfterSpecifyLenth.map((item)=> {
         let s = new Set();
         for (let i in item) {
-            s.add(item[i]);
+            //如果是已经发送的猜测字符，那么下一次不继续发送了
+            if(!alreadyRequestCharAr.includes(item[i].toUpperCase())){
+                s.add(item[i]);
+            }
         }
         for (let key of s.values()) {
             if (objCount[key]) {
@@ -194,8 +269,14 @@ function getBestMatchChar() {
     }
     let mostPossibleChar = maxKey.toUpperCase();
     logger.info(`第${totalWordCount}个单词: 按照出现频率最高的字符是 ${mostPossibleChar} `);
+
+    CONFIG.currentGuessWord.alreadyRequestCharAr.push(mostPossibleChar);
+
     return mostPossibleChar;
 }
+
+
+
 
 /**
  * handle error message
@@ -226,7 +307,8 @@ async function getAllWords() {
     let data = await readFile('./wordsEn.txt');
     let data2str = data.toString();
     let wordsArray = data2str.split('\r\n');
-    CONFIG.allWordsArray = wordsArray;
+    initDictDB=wordsArray;
+    CONFIG.allWordsArray = initDictDB;
 }
 
 
