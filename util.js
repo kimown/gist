@@ -8,7 +8,7 @@
 
 const fs = require('fs');
 const os = require('os');
-const path = require('path')
+const path = require('path');
 
 
 let request = require('request');
@@ -86,14 +86,14 @@ exports.request = function (options) {
  */
 exports.os = os;
 
-exports.rmLogFile = function () {
-    var filename = path.join(__dirname, 'created-logfile.log');
+exports.rmFile = function (absolutePath) {
 
-    try { fs.unlinkSync(filename); }
-    catch (ex) {
-        loggerfile.info(`删除日志文件created-logfile.log失败,err　${ex}`);
+    try {
+        fs.unlinkSync(absolutePath);
+    } catch (err) {
+        logger.info(`删除文件 ${absolutePath} 失败,err　${err}`);
         return;
     }
-    loggerfile.info(`删除日志文件created-logfile.log成功`);
+    logger.info(`删除文件 ${absolutePath} 成功`);
 };
 

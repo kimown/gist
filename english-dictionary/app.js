@@ -5,22 +5,29 @@
 
 'use strict';
 
+const path = require('path');
+
+
 let {requestUrl, playerId}=require('./../tmp/config.json');
-let {request, readFile,rmLogFile}= require('./../util');
+let {request, readFile,rmFile}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
+let {writeUserData}=require('./common');
 
-rmLogFile();
 
 
-console.log('---------------Begin Game-------------');
 process.on('uncaughtException', (err) => {
+
     console.log(err);
 });
 
 process.on('exit', (code) => {
+    //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
+    writeUserData(CONFIG);
     console.log(`About to exit with code: ${code}`);
 });
+
+
 
 const CONFIG = {
     action: {
@@ -52,12 +59,12 @@ const CONFIG = {
     }
 };
 
-let initDictDB;
 
 
 async function main() {
 
     // try {
+        await removeLogFile();
         await getAllWords();
         await startGame();
 
@@ -317,38 +324,23 @@ function getBestMatchChar() {
 
 
 
-
-/**
- * handle error message
- * @param e
- */
-function handleError(...theArgs) {
-
-    let msgAll = theArgs.map((item)=> {
-        let msg;
-        let type = typeof item;
-        switch (type) {
-            case 'object':
-                msg = JSON.stringify(item);
-                break;
-            default:
-                msg = item;
-        }
-        return msg;
-    })
-
-    console.error(msgAll);
-}
-
 /**
  * 读取预制的英文字典数据
  */
 async function getAllWords() {
     let data = await readFile('./wordsEn.txt');
     let data2str = data.toString();
-    let wordsArray = data2str.split('\r\n');
-    initDictDB=wordsArray;
-    CONFIG.allWordsArray = initDictDB;
+    let wordsArray = data2str.split('\r');
+    CONFIG.allWordsArray = wordsArray;
+}
+
+
+/**
+ * 删除日志文件
+ */
+async function removeLogFile() {
+    let filePath = path.join(__dirname,'..','created-logfile.log');
+    await rmFile(filePath);
 }
 
 
