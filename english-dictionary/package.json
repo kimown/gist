@@ -1,0 +1,13 @@
+{
+  "name": "english-dictionary",
+  "version": "1.0.0",
+  "description": "``` bash cd /tmp git clone git@github.com:kimown/gist.git cd gist/ npm i cd english-dictionary/ node index.js ```",
+  "main": "index.js",
+  "scripts": {
+    "pm2":"pm2 start index.js --name hangman",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

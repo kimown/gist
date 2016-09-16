@@ -13,17 +13,21 @@ let loggerfile = require('./../loggerfile');
 rmLogFile();
 
 
+console.log('---------------Begin Game-------------');
 process.on('uncaughtException', (err) => {
-    console.log(`Caught exception: ${err}`);
+    console.log(err);
 });
 
-
+process.on('exit', (code) => {
+    console.log(`About to exit with code: ${code}`);
+});
 
 const CONFIG = {
     action: {
         startGame: 'startGame',
         nextWord: 'nextWord',
-        guessWord: 'guessWord'
+        guessWord: 'guessWord',
+        getResult:'getResult'
     },
     allWordsArray: [],
     requestUrl,
@@ -134,8 +138,13 @@ async function GiveMeAWord() {
  * 猜测当前的单词
  */
 async function makeAGuess() {
-    let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
+    let {currentGuessWord, numberOfGuessAllowedForEachWord,numberOfWordsToGuess}=CONFIG;
     let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
+    //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
+    if(totalWordCount>numberOfWordsToGuess){
+        await GetYourResult();
+        return;
+    }
 
     //如果正在猜测第几次超过允许猜测的最大次数
     if (currentGuessCount > numberOfGuessAllowedForEachWord) {
@@ -170,6 +179,25 @@ async function makeAGuess() {
     }
 }
 
+
+/**
+ *
+ * 4. Get Your Result
+ */
+async function GetYourResult(){
+    let postData = {
+        sessionId: CONFIG.sessionId,
+        action: CONFIG.action.getResult
+    };
+    let res = await request({
+        method: 'post',
+        body: postData,
+        json: true,
+        url: CONFIG.requestUrl
+    });
+    loggerfile.info(`最后得分`,res);
+}
+
 /**
  * 初始化当前猜词状态
  */
@@ -191,6 +219,8 @@ function checkWordCotainAsterisks() {
     let { word}=currentGuessWord;
     return word.includes('*');
 }
+
+
 
 /**
  * 判断单词中是否全部都是*号
