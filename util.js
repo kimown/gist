@@ -103,6 +103,8 @@ exports.request = function (options) {
  */
 exports.os = os;
 
+exports.path=path;
+
 exports.rmFile = function (absolutePath) {
 
     try {
@@ -122,6 +124,10 @@ exports.rmFile = function (absolutePath) {
  * @param absoultePath
  */
 exports.existFileSync=function (absoultePath) {
+    if(!absoultePath.startsWith('/')){
+        logger.error(`传入的路径 ${absoultePath}　不是绝对路径`);
+
+    }
     let flag=true;
     try{
         fs.accessSync(absoultePath);

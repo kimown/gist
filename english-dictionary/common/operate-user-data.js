@@ -6,7 +6,13 @@
 
 'use strict';
 
-let {readFile,writeFileSync}= require('./../../util');
+let {writeFileSync,existFileSync,path}= require('./../../util');
+
+let initUserData=require('./init-user-data');
+
+let loggerfile = require('./../../loggerfile');
+
+const userDataPath=path.join(__dirname,'..','data.json');
 
 /**
  * 读取用户数据，主要是为了断线重连
@@ -14,6 +20,19 @@ let {readFile,writeFileSync}= require('./../../util');
  * - 如果没有，则初始化用户数据
  */
 async function readUserData() {
+    loggerfile.info('---------------Begin Game-------------11');
+
+    let config;
+    if(existFileSync(userDataPath)){
+        loggerfile.info('------ 断线重连,重新开始上次断线的游戏场景　-------');
+        //TODO 需要验证上次用户保存的数据的正确性，否则......
+        config=require(userDataPath);
+    }else{
+        loggerfile.info('-----　-初始化用户数据 -------');
+         config=　await　initUserData()
+    }
+    console.error(config);
+    return config;
 
 }
 
@@ -27,7 +46,7 @@ async function readUserData() {
  */
 
 function writeUserData(data) {
-    console.log('------保存用户数据至data.json文件-------');
+    loggerfile.info('------保存用户数据至data.json文件-------');
     writeFileSync('data.json',data);
 
 }

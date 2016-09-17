@@ -5,74 +5,66 @@
 
 'use strict';
 
-const path = require('path');
-
-
-let {requestUrl, playerId}=require('./../tmp/config.json');
-let {request, readFile,rmFile}= require('./../util');
+let {request, readFile,rmFile,path}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
-let {writeUserData}=require('./common');
+let {writeUserData,readUserData}=require('./common');
 
 
+//
+// process.on('uncaughtException', (err) => {
+//
+//     console.log(err);
+// });
+//
+// process.on('exit',(code) => {
+//     //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
+//     saveUserDataSync();
+//     console.log(`About to exit with code: ${code}`);
+// });
 
-process.on('uncaughtException', (err) => {
+let CONFIG={};
 
-    console.log(err);
-});
-
-process.on('exit',(code) => {
-    //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
-    saveUserDataSync();
-    console.log(`About to exit with code: ${code}`);
-});
-
-
-
-const CONFIG = {
-    action: {
-        startGame: 'startGame',
-        nextWord: 'nextWord',
-        guessWord: 'guessWord',
-        getResult:'getResult'
-    },
-    allWordsArray: [],
-    requestUrl,
-    playerId,　　　　　　　//用户账号
-    sessionId: null,　　//用户id,必填
-    numberOfGuessAllowedForEachWord: null,  //允许猜测的最大次数，默认10次
-    numberOfWordsToGuess: null,　　　　　　　　// 一共要猜测的单词数量，默认80个
-    currentGuessWord: {
-        word: null,
-
-        //正在猜测第几次
-        currentGuessCount: 1,
-
-        //已经发送猜出去的字符
-        alreadyRequestCharAr:[],
-
-        //　正在猜第[1,80]个单词
-        totalWordCount: 1,
-
-        // 这个单词已经猜错的次数，如果该次数等于　numberOfGuessAllowedForEachWord，则猜测次数已达到上限，直接nextWord
-        wrongGuessCountOfCurrentWord: 0
-    }
-};
+// const CONFIG = {
+//     action: {
+//         startGame: 'startGame',
+//         nextWord: 'nextWord',
+//         guessWord: 'guessWord',
+//         getResult:'getResult'
+//     },
+//     allWordsArray: [],
+//     requestUrl,
+//     playerId,　　　　　　　//用户账号
+//     sessionId: null,　　//用户id,必填
+//     numberOfGuessAllowedForEachWord: null,  //允许猜测的最大次数，默认10次
+//     numberOfWordsToGuess: null,　　　　　　　　// 一共要猜测的单词数量，默认80个
+//     currentGuessWord: {
+//         word: null,
+//
+//         //正在猜测第几次
+//         currentGuessCount: 1,
+//
+//         //已经发送猜出去的字符
+//         alreadyRequestCharAr:[],
+//
+//         //　正在猜第[1,80]个单词
+//         totalWordCount: 1,
+//
+//         // 这个单词已经猜错的次数，如果该次数等于　numberOfGuessAllowedForEachWord，则猜测次数已达到上限，直接nextWord
+//         wrongGuessCountOfCurrentWord: 0
+//     }
+// };
 
 
 
 async function main() {
+    //里面保存了所有的用户数据．
+    CONFIG= await readUserData();
 
-    // try {
-        await removeLogFile();
-        await getAllWords();
-        await startGame();
 
-    //
-    // } catch (e) {
-    //     handleError(e);
-    // }
-
+    await removeLogFile();
+    await getAllWords();
+    await startGame();
 }
 
 

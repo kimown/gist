@@ -9,13 +9,12 @@ let {readFile}= require('./../../util');
 //请求url 　用户登陆名
 let {requestUrl, playerId}=require('./../../tmp/config.json');
 
+let logger = require('./../../logger');
+let loggerfile = require('./../../loggerfile');
 
+async function initUserData() {
+    let config={};
 
-module.exports=async function () {
-    console.log('---------------Begin Game-------------');
-
-
-    console.log('------初始化用户数据-------');
 
     //　请求指令
     let action={
@@ -26,10 +25,10 @@ module.exports=async function () {
     };
 
     //预制英文单词字典
-    let allWordsArray=await getAllWords();
+    // let allWordsArray=await getAllWords();
 
 
-    let config=Object.assign({},{action},{allWordsArray},{requestUrl},{playerId});
+    // let config=Object.assign({},{action},{allWordsArray},{requestUrl},{playerId});
 
     
     return config
@@ -48,5 +47,7 @@ async function getAllWords() {
 }
 
 async function readUserData() {
-    
+
 }
+
+module.exports=initUserData;
