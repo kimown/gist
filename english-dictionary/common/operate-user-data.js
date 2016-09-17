@@ -47,7 +47,9 @@ async function readUserData() {
 
 function writeUserData(data) {
     loggerfile.info('------保存用户数据至data.json文件-------');
-    writeFileSync('data.json',data);
+    let {userDataPath}=configPath;
+
+    writeFileSync(userDataPath,data);
 
 }
 

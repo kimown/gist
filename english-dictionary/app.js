@@ -5,12 +5,10 @@
 
 'use strict';
 
-let {request, readFile,rmFile,path}= require('./../util');
+let {request,rmFile,path}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
 let {writeUserData,readUserData}=require('./common');
-let configPath=require('./common/config-path');
-
 
 
 process.on('uncaughtException', (err) => {
@@ -289,6 +287,12 @@ async function removeLogFile() {
     let filePath = path.join(__dirname,'..','created-logfile.log');
     await rmFile(filePath);
 }
+
+
+function saveUserDataSync() {
+    writeUserData(JSON.stringify(CONFIG,null,2));
+}
+
 
 
 main();

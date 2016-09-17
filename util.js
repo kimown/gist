@@ -65,7 +65,10 @@ exports.writeFileSync = function (path, data) {
     fs.writeFileSync(path, data,'utf8', (err) => {
         if (err) {
             logger.error(`保存文件 ${path}　失败,err: ${err}`);
+        }else{
+            logger.info(`保存文件 ${path} 成功`);
         }
+
     });
 };
 
