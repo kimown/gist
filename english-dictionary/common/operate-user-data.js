@@ -6,11 +6,11 @@
 
 'use strict';
 
-let {readFile,writeFile}= require('./../../util');
+let {readFile,writeFileSync}= require('./../../util');
 
 /**
- * 读取用户数据
- * -　断线重连
+ * 读取用户数据，主要是为了断线重连
+ *
  */
 async function readUserData() {
 
@@ -25,9 +25,9 @@ async function readUserData() {
  * - 玩家突然不想完了
  */
 
-async function writeUserData(data) {
-  console.log('------保存用户数据至data.json文件-------');
-    await writeFile('data.json',data,);
+function writeUserData(data) {
+    console.log('------保存用户数据至data.json文件-------');
+    writeFileSync('data.json',data);
 
 }
 

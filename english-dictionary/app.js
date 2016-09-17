@@ -21,9 +21,9 @@ process.on('uncaughtException', (err) => {
     console.log(err);
 });
 
-process.on('exit', (code) => {
+process.on('exit',(code) => {
     //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
-    writeUserData(CONFIG);
+    saveUserDataSync();
     console.log(`About to exit with code: ${code}`);
 });
 
@@ -341,6 +341,11 @@ async function getAllWords() {
 async function removeLogFile() {
     let filePath = path.join(__dirname,'..','created-logfile.log');
     await rmFile(filePath);
+}
+
+
+function saveUserDataSync() {
+     writeUserData(JSON.stringify(CONFIG,null,2));
 }
 
 

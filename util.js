@@ -44,11 +44,28 @@ exports.writeFile = function (path, data) {
     return new Promise((resolve, reject)=> {
         fs.writeFile(path, data, (err) => {
             if (err) {
+                logger.error(`保存文件 ${path}　失败,err: ${err}`);
                 reject(err);
             }
         });
     })
 };
+
+/**
+ * http://stackoverflow.com/questions/30780216/writing-to-a-txt-file-before-node-js-exits
+ * https://nodejs.org/dist/latest-v4.x/docs/api/fs.html#fs_fs_writefile_file_data_options_callback
+ * @param path
+ * @param data
+ * @returns {Promise}
+ */
+exports.writeFileSync = function (path, data) {
+    fs.writeFileSync(path, data,'utf8', (err) => {
+        if (err) {
+            logger.error(`保存文件 ${path}　失败,err: ${err}`);
+        }
+    });
+};
+
 
 
 /**
@@ -96,4 +113,6 @@ exports.rmFile = function (absolutePath) {
     }
     logger.info(`删除文件 ${absolutePath} 成功`);
 };
+
+// http://unix.stackexchange.com/questions/554/how-to-monitor-cpu-memory-usage-of-a-single-process
 
