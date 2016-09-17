@@ -10,7 +10,7 @@ let {writeFileSync,existFileSync,rmFileSync}= require('./../../util');
 
 let initUserData=require('./init-user-data');
 
-let loggerfile = require('./../../loggerfile');
+let loggerfile = require('./../../loggerfile')();
 
 let configPath=require('./config-path');
 

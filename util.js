@@ -13,7 +13,7 @@ const path = require('path');
 
 let request = require('request');
 let logger = require('./logger');
-let loggerfile=require('./loggerfile');
+let loggerfile=require('./loggerfile')();
 
 
 /**

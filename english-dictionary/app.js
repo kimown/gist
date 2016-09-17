@@ -7,7 +7,7 @@
 
 let {request, rmFileSync}= require('./../util');
 let logger = require('./../logger');
-let loggerfile = require('./../loggerfile');
+let loggerfile = require('./../loggerfile')();
 let {writeUserData, readUserData}=require('./common');
 let configPath = require('./common/config-path');
 
@@ -126,20 +126,9 @@ async function makeAGuess() {
 
         let mostPossibleChar = getBestMatchChar();
 
-        let postData = {
-            sessionId: CONFIG.sessionId,
-            action: CONFIG.action.guessWord,
-            guess: mostPossibleChar
-        };
-        let res = await request({
-            method: 'post',
-            body: postData,
-            json: true,
-            url: CONFIG.requestUrl
-        });
+        let res= await sendMostPossibleCharToServer();
 
-
-        //TODO 如果mostPossibleChar不在返回单词里面，去除含有mostPossibleChar的单词
+        //更新状态
         setCurrentGuessStatus(res);
 
         //如果字符没有猜对
@@ -156,6 +145,25 @@ async function makeAGuess() {
             await wordHasGuessedOperation();
         }
     }
+}
+
+
+async function sendMostPossibleCharToServer(mostPossibleChar) {
+
+    let postData = {
+        sessionId: CONFIG.sessionId,
+        action: CONFIG.action.guessWord,
+        guess: mostPossibleChar
+    };
+
+    let res = await request({
+        method: 'post',
+        body: postData,
+        json: true,
+        url: CONFIG.requestUrl
+    });
+
+    return res;
 }
 
 /**

@@ -17,3 +17,11 @@ module.exports = new (winston.Logger)({
         new (winston.transports.File)({ filename: filename })
     ]
 });
+
+module.exports =function (absoultePath=filename) {
+    return new (winston.Logger)({
+        transports: [
+            new (winston.transports.File)({ filename: absoultePath })
+        ]
+    });
+}
