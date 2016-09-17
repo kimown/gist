@@ -6,13 +6,12 @@
 
 'use strict';
 
-let {writeFileSync,existFileSync,rmFileSync}= require('./../../util');
+let {writeFileSync, existFileSync, rmFileSync, readFile}= require('./../../util');
 
-let initUserData=require('./init-user-data');
+let initUserData = require('./init-user-data');
 
 let loggerfile = require('./../../loggerfile')();
-
-let configPath=require('./config-path');
+let configPath = require('./config-path');
 
 /**
  * 读取用户数据，主要是为了断线重连
@@ -26,19 +25,32 @@ async function readUserData() {
     loggerfile.info('---------------Begin Game-------------');
 
     let config;
-    if(checkBeginNewGame()){
+    if (checkBeginNewGame()) {
         loggerfile.info('-------初始化用户数据开始 -------');
-        config=　await　initUserData();
+        config = await initUserData();
         loggerfile.info('------初始化用户数据结束 -------');
-    }else{
+    } else {
         let {userDataPath}=configPath;
         loggerfile.info('------ 断线重连,重新开始上次断线的游戏场景　-------');
-        config=require(userDataPath);
+        config = require(userDataPath);
         loggerfile.info('------ 断线重连,恢复用户上次的数据　-------');
     }
 
+    //预制英文单词字典
+    config.allWordsArray = await  getAllWords();
+
     return config;
 
+}
+
+/**
+ * 读取预制的英文字典数据
+ */
+async function getAllWords() {
+    let {dictPath}=configPath;
+    let data2str = await readFile(dictPath);
+    let wordsArray = data2str.split('\n');
+    return wordsArray;
 }
 
 /**
@@ -46,12 +58,12 @@ async function readUserData() {
  *
  */
 function checkBeginNewGame() {
-   let  flag=true;
+    let flag = true;
     let {userDataPath}=configPath;
-    if(existFileSync(userDataPath)){
-        if(checkUserDataIsValid(userDataPath)){
-            flag=false;
-        }else{
+    if (existFileSync(userDataPath)) {
+        if (checkUserDataIsValid(userDataPath)) {
+            flag = false;
+        } else {
             loggerfile.info('-----　data.json文件里面没有sessionId,有情况：删除文件 -------');
             removeDataJson();
         }
@@ -62,11 +74,11 @@ function checkBeginNewGame() {
  * 需要验证上次用户保存的数据的正确性
  */
 function checkUserDataIsValid(path) {
-    let flag=true;
+    let flag = true;
 
-    let config=require(path);
-    if(!(config.hasOwnProperty('sessionId')&&config.sessionId)){
-        flag=false;
+    let config = require(path);
+    if (!(config.hasOwnProperty('sessionId') && config.sessionId)) {
+        flag = false;
     }
 
     return flag;
@@ -84,7 +96,7 @@ function writeUserData(data) {
     loggerfile.info('------保存用户数据至data.json文件-------');
     let {userDataPath}=configPath;
 
-    writeFileSync(userDataPath,data);
+    writeFileSync(userDataPath, data);
 
 }
 
@@ -110,7 +122,7 @@ function removeDataJson() {
     rmFileSync(userDataPath);
 }
 
-module.exports={
- readUserData,
- writeUserData
+module.exports = {
+    readUserData,
+    writeUserData
 };

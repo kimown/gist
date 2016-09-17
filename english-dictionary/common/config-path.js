@@ -11,6 +11,8 @@ const dictPath=path.join(__dirname,'..','enwiktionary-latest-all-titles-in-ns0-f
 const configJsonPath=path.join(__dirname,'..','..','tmp','config.json');
 const userDataPath=path.join(__dirname,'..','data.json');
 const logFilePath=path.join(__dirname,'..','..','created-logfile.log');
+const scoreLogFilePath=path.join(__dirname,'..','..','created-logfile-score.log');
+
 
 let configPath={
 
@@ -24,7 +26,10 @@ let configPath={
     userDataPath,
 
     //日志文件路径
-    logFilePath
+    logFilePath,
+
+    //分数日志文件
+    scoreLogFilePath
 };
 
 module.exports=configPath;

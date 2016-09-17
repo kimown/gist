@@ -4,12 +4,12 @@
 
 
 'use strict';
-
+let configPath = require('./common/config-path');
 let {request, rmFileSync}= require('./../util');
 let logger = require('./../logger');
-let loggerfile = require('./../loggerfile')();
+let scoreLoggerfile = require('./../loggerfile')(configPath.scoreLogFilePath);
+
 let {writeUserData, readUserData}=require('./common');
-let configPath = require('./common/config-path');
 
 
 process.on('uncaughtException', (err) => {
@@ -80,7 +80,10 @@ async function startGame() {
  */
 async function GiveMeAWord() {
 
-    await checkArriveLimitWords();
+    let isArriveLimitWords = await checkArriveLimitWords();
+    if (isArriveLimitWords) {
+        return;
+    }
 
     let postData = {
         sessionId: CONFIG.sessionId,
@@ -126,7 +129,7 @@ async function makeAGuess() {
 
         let mostPossibleChar = getBestMatchChar();
 
-        let res= await sendMostPossibleCharToServer();
+        let res = await sendMostPossibleCharToServer();
 
         //更新状态
         setCurrentGuessStatus(res);
@@ -202,8 +205,9 @@ async function checkArriveLimitWords() {
     if (totalWordCount > numberOfWordsToGuess) {
         await GetYourResult();
         processExit();
-        return;
+        return true;
     }
+    return false;
 }
 
 /**
@@ -241,7 +245,8 @@ async function GetYourResult() {
         json: true,
         url: CONFIG.requestUrl
     });
-    loggerfile.info(`最后得分`, res);
+
+    scoreLoggerfile.info(`最后得分`, res);
 }
 
 function processExit() {
