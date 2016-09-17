@@ -31,7 +31,6 @@ async function readUserData() {
         loggerfile.info('-----　-初始化用户数据 -------');
          config=　await　initUserData()
     }
-    console.error(config);
     return config;
 
 }

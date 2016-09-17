@@ -4,7 +4,7 @@
  */
 
 'use strict';
-let {readFile}= require('./../../util');
+let {readFile,path}= require('./../../util');
 
 //请求url 　用户登陆名
 let {requestUrl, playerId}=require('./../../tmp/config.json');
@@ -13,8 +13,6 @@ let logger = require('./../../logger');
 let loggerfile = require('./../../loggerfile');
 
 async function initUserData() {
-    let config={};
-
 
     //　请求指令
     let action={
@@ -25,13 +23,13 @@ async function initUserData() {
     };
 
     //预制英文单词字典
-    // let allWordsArray=await getAllWords();
+    let allWordsArray=await  getAllWords();
 
 
-    // let config=Object.assign({},{action},{allWordsArray},{requestUrl},{playerId});
+    let config=Object.assign({},{action},{allWordsArray},{requestUrl},{playerId});
 
     
-    return config
+    return config;
 
 };
 
@@ -40,14 +38,12 @@ async function initUserData() {
  * 读取预制的英文字典数据
  */
 async function getAllWords() {
-    let data = await readFile('./../wordsEn.txt');
+    const dictPath=path.join(__dirname,'..','wordsEn.txt');
+    let data = await readFile(dictPath);
     let data2str = data.toString();
-    let wordsArray = data2str.split('\n');
+    let wordsArray = data2str.split('\r');
     return wordsArray;
 }
 
-async function readUserData() {
-
-}
 
 module.exports=initUserData;

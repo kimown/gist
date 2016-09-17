@@ -61,7 +61,6 @@ async function main() {
     //里面保存了所有的用户数据．
     CONFIG= await readUserData();
 
-
     await removeLogFile();
     await getAllWords();
     await startGame();

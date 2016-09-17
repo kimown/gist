@@ -23,6 +23,7 @@ let loggerfile=require('./loggerfile');
  * @returns {Promise}
  */
 exports.readFile = function (path) {
+    checkIsAbsoultePath(path);
     return new Promise((resolve, reject)=> {
         fs.readFile(path, (err, data) => {
             if (err) {
@@ -41,6 +42,7 @@ exports.readFile = function (path) {
  * @returns {Promise}
  */
 exports.writeFile = function (path, data) {
+    checkIsAbsoultePath(path);
     return new Promise((resolve, reject)=> {
         fs.writeFile(path, data, (err) => {
             if (err) {
@@ -59,6 +61,7 @@ exports.writeFile = function (path, data) {
  * @returns {Promise}
  */
 exports.writeFileSync = function (path, data) {
+    checkIsAbsoultePath(path);
     fs.writeFileSync(path, data,'utf8', (err) => {
         if (err) {
             logger.error(`保存文件 ${path}　失败,err: ${err}`);
@@ -106,7 +109,7 @@ exports.os = os;
 exports.path=path;
 
 exports.rmFile = function (absolutePath) {
-
+    checkIsAbsoultePath(absolutePath);
     try {
         fs.unlinkSync(absolutePath);
     } catch (err) {
@@ -124,10 +127,7 @@ exports.rmFile = function (absolutePath) {
  * @param absoultePath
  */
 exports.existFileSync=function (absoultePath) {
-    if(!absoultePath.startsWith('/')){
-        logger.error(`传入的路径 ${absoultePath}　不是绝对路径`);
-
-    }
+    checkIsAbsoultePath(absoultePath);
     let flag=true;
     try{
         fs.accessSync(absoultePath);
@@ -137,3 +137,8 @@ exports.existFileSync=function (absoultePath) {
     return flag;
 };
 
+let checkIsAbsoultePath=exports.checkIsAbsoultePath=function(path) {
+    if(!path.startsWith('/')){
+        logger.info(`传入的路径 ${path}　不是绝对路径`);
+    }
+};
