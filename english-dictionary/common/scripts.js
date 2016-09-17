@@ -12,20 +12,20 @@ const dictNewFilePath=path.join(__dirname,'enwiktionary-latest-all-titles-in-ns0
 
 
 async function main() {
-    let allDict2str = await readFile(dictFilePath);
+    let allDict2str = await readFile(dictNewFilePath);
     let allDictArray = allDict2str.split('\n');
     console.log(`初始一共　${allDictArray.length} 个单词`);
 
 
-    let allDictArrayAterFilter = filterAllDictArray(allDictArray);
-    console.log(`按照a-zA-Z过滤后，共　${allDictArrayAterFilter.length} 个单词`);
+    // let allDictArrayAterFilter = filterAllDictArray(allDictArray);
+    // console.log(`按照a-zA-Z过滤后，共　${allDictArrayAterFilter.length} 个单词`);
 
 
 
-    // let dictArrayAfterFilterSameChar=filterAllDictArrayBySameChar(allDictArrayAterFilter);
-    // console.log(`将字符全部相同的单词过滤后，共　${dictArrayAfterFilterSameChar.length}　个单词`);
+    let dictArrayAfterFilterSameChar=filterAllDictArrayBySameChar(allDictArray);
+    console.log(`将字符全部相同的单词过滤后，共　${dictArrayAfterFilterSameChar.length}　个单词`);
 
-    writeFileSync(dictNewFilePath,allDictArrayAterFilter.join('\n').toString());
+    writeFileSync(dictNewFilePath,dictArrayAfterFilterSameChar.join('\n').toString());
 
 }
 
