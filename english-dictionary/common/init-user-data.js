@@ -4,12 +4,11 @@
  */
 
 'use strict';
-let {readFile,path}= require('./../../util');
+let {readFile}= require('./../../util');
 let configPath=require('./config-path');
 //请求url 　用户登陆名
 let {requestUrl, playerId}=require('./../../tmp/config.json');
 
-let logger = require('./../../logger');
 let loggerfile = require('./../../loggerfile');
 
 async function initUserData() {

@@ -3,7 +3,7 @@
  * Created by kimown on 16-9-17.
  */
 
-let {readFile,path}= require('./../../util');
+let {path}= require('./../../util');
 
 
 
