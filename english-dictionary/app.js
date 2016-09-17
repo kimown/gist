@@ -30,8 +30,7 @@ async function main() {
     //里面保存了所有的用户数据．
     CONFIG= await readUserData();
 
-    let {sessionId}=CONFIG;
-    if(sessionId){
+    if(CONFIG.hasOwnProperty('sessionId')&&CONFIG.sessionId){
         //断线重玩游戏
         await makeAGuess();
     }else{
