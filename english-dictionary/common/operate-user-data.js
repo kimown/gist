@@ -30,7 +30,7 @@ async function readUserData() {
     loggerfile.info(`------读取固定的字典数据结束，共　${allWords.length}　个单词 -------`);
 
 
-    let config={};
+    let config = {};
     if (checkBeginNewGame()) {
         loggerfile.info('-------初始化用户数据开始 -------');
         config = await initUserData();
