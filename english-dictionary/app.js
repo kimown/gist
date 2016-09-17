@@ -5,35 +5,35 @@
 
 'use strict';
 
-let {request,rmFileSync}= require('./../util');
+let {request, rmFileSync}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
-let {writeUserData,readUserData}=require('./common');
-let configPath=require('./common/config-path');
+let {writeUserData, readUserData}=require('./common');
+let configPath = require('./common/config-path');
 
 
 process.on('uncaughtException', (err) => {
     console.log(err);
 });
 
-process.on('exit',(code) => {
+process.on('exit', (code) => {
     //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
     saveUserDataSync();
     console.log(`程序退出了About to exit with code: ${code}`);
 });
 
-let CONFIG={};
+let CONFIG = {};
 
 
 async function main() {
 
     //里面保存了所有的用户数据．
-    CONFIG= await readUserData();
+    CONFIG = await readUserData();
 
-    if(CONFIG.hasOwnProperty('sessionId')&&CONFIG.sessionId){
+    if (CONFIG.hasOwnProperty('sessionId') && CONFIG.sessionId) {
         //断线重玩游戏
         await makeAGuess();
-    }else{
+    } else {
         //new 一个game
         await startGame();
     }
@@ -113,14 +113,14 @@ async function GiveMeAWord() {
  */
 async function makeAGuess() {
 
-    let isNeedNextWord=  checkNeedNextWord();
+    let isNeedNextWord = checkNeedNextWord();
 
-    if(isNeedNextWord){
+    if (isNeedNextWord) {
         initCurrentGuessWordStatus();
         await GiveMeAWord();
-    }else {
+    } else {
         let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
-        let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
+        let {wrongGuessCountOfCurrentWord, totalWordCount, word, currentGuessCount}=currentGuessWord;
         logger.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
 
         let mostPossibleChar = getBestMatchChar();
@@ -142,15 +142,15 @@ async function makeAGuess() {
         setCurrentGuessStatus(res);
 
         //如果字符没有猜对
-        if(!checkGuessCorrect(mostPossibleChar)){
+        if (!checkGuessCorrect(mostPossibleChar)) {
             CONFIG.currentGuessWord.alreadyConfirmWrongCharAr.push(mostPossibleChar);
         }
 
         //如果单词没有全部猜对，递归调用猜词方法;否则直接nextWord
         //如果正在猜测的错误次数超过允许猜测的最大次数,nextWorld
-        if(checkNeedNextWord()||checkWordCotainAsterisks()){
+        if (checkNeedNextWord() || checkWordCotainAsterisks()) {
             await makeAGuess();
-        }else{
+        } else {
             loggerfile.info(`-----　第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} ------`);
             await wordHasGuessedOperation();
         }
@@ -162,7 +162,7 @@ async function makeAGuess() {
  */
 function checkGuessCorrect(mostPossibleChar) {
     let {currentGuessWord}=CONFIG;
-    let { word}=currentGuessWord;
+    let {word}=currentGuessWord;
     return word.includes(mostPossibleChar)
 }
 
@@ -170,27 +170,27 @@ function checkGuessCorrect(mostPossibleChar) {
  * 是否需要下一个单词 ,默认走正常猜词流程
  */
 function checkNeedNextWord() {
-    let flag=false;
+    let flag = false;
     let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
-    let {wrongGuessCountOfCurrentWord, totalWordCount,currentGuessCount}=currentGuessWord;
+    let {wrongGuessCountOfCurrentWord, totalWordCount, currentGuessCount}=currentGuessWord;
 
 
     //如果正在猜测的错误次数超过允许猜测的最大次数 或者　超过20次　
     if (wrongGuessCountOfCurrentWord == numberOfGuessAllowedForEachWord) {
         loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
-        flag=true;
-    }else if(currentGuessCount>20){
+        flag = true;
+    } else if (currentGuessCount > 20) {
         loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜测次数已经超过 20　 ，开始下一轮.......failing`);
-        flag=true;
+        flag = true;
     }
     return flag;
 }
 
 async function checkArriveLimitWords() {
-    let {currentGuessWord,numberOfWordsToGuess}=CONFIG;
+    let {currentGuessWord, numberOfWordsToGuess}=CONFIG;
     let {totalWordCount}=currentGuessWord;
     //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
-    if(totalWordCount>numberOfWordsToGuess){
+    if (totalWordCount > numberOfWordsToGuess) {
         await GetYourResult();
         processExit();
         return;
@@ -203,14 +203,14 @@ async function checkArriveLimitWords() {
  *
  */
 async function wordHasGuessedOperation() {
-    let {allWordsArray,wordsHasGuessed,currentGuessWord}=CONFIG;
+    let {allWordsArray, wordsHasGuessed, currentGuessWord}=CONFIG;
     let {word}=currentGuessWord;
     CONFIG.wordsHasGuessed.push(word);
 
     //allWordsArray 里面删除这个单词
-    let positiion=allWordsArray.indexOf(word);
-    if(positiion!=-1){
-        CONFIG.allWordsArray.splice(positiion,1);
+    let positiion = allWordsArray.indexOf(word);
+    if (positiion != -1) {
+        CONFIG.allWordsArray.splice(positiion, 1);
         loggerfile.info(`-----　删除 ${word} 后剩余 ${CONFIG.allWordsArray.length}　个单词　------`);
     }
     initCurrentGuessWordStatus();
@@ -221,7 +221,7 @@ async function wordHasGuessedOperation() {
  *
  * 4. Get Your Result
  */
-async function GetYourResult(){
+async function GetYourResult() {
     let postData = {
         sessionId: CONFIG.sessionId,
         action: CONFIG.action.getResult
@@ -232,7 +232,7 @@ async function GetYourResult(){
         json: true,
         url: CONFIG.requestUrl
     });
-    loggerfile.info(`最后得分`,res);
+    loggerfile.info(`最后得分`, res);
 }
 
 function processExit() {
@@ -247,14 +247,14 @@ function processExit() {
  */
 function initCurrentGuessWordStatus() {
     let {currentGuessWord}=CONFIG;
-    currentGuessWord.word=null;
-    currentGuessWord.alreadyConfirmWrongCharAr=[];
-    currentGuessWord.currentGuessCount=1;
-    currentGuessWord.alreadyRequestCharAr=[];
-    currentGuessWord.alreadyConfirmWrongCharAr=[];
+    currentGuessWord.word = null;
+    currentGuessWord.alreadyConfirmWrongCharAr = [];
+    currentGuessWord.currentGuessCount = 1;
+    currentGuessWord.alreadyRequestCharAr = [];
+    currentGuessWord.alreadyConfirmWrongCharAr = [];
     //重点是这个猜词的个数+1
-    currentGuessWord.totalWordCount=++currentGuessWord.totalWordCount;
-    currentGuessWord.wrongGuessCountOfCurrentWord=0;
+    currentGuessWord.totalWordCount = ++currentGuessWord.totalWordCount;
+    currentGuessWord.wrongGuessCountOfCurrentWord = 0;
 }
 
 /**
@@ -262,10 +262,9 @@ function initCurrentGuessWordStatus() {
  */
 function checkWordCotainAsterisks() {
     let {currentGuessWord}=CONFIG;
-    let { word}=currentGuessWord;
+    let {word}=currentGuessWord;
     return word.includes('*');
 }
-
 
 
 /**
@@ -273,9 +272,9 @@ function checkWordCotainAsterisks() {
  */
 function checkWordAllAsterisks() {
     let {currentGuessWord}=CONFIG;
-    let { word}=currentGuessWord;
-    return word.split('').every((v)=>{
-        return v=='*'
+    let {word}=currentGuessWord;
+    return word.split('').every((v)=> {
+        return v == '*'
     })
 }
 
@@ -304,46 +303,58 @@ function setCurrentGuessStatus(res) {
  */
 function getBestMatchChar() {
     let {currentGuessWord, allWordsArray}=CONFIG;
-    let {word, totalWordCount,alreadyRequestCharAr,alreadyConfirmWrongCharAr}=currentGuessWord;
-    let wordLength = word.length;
-    let allWordsArrayAfterSpecifyLenth = allWordsArray.filter((v)=> {
-        return v.trim().length == wordLength && v.trim().indexOf("'") == -1;
-    })
-    logger.info(`第${totalWordCount}个单词: 先按照长度为 ${wordLength}　的英文单词过滤，过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
+    let {word, totalWordCount, alreadyRequestCharAr, alreadyConfirmWrongCharAr}=currentGuessWord;
 
-    if(!checkWordAllAsterisks()){
-        allWordsArrayAfterSpecifyLenth=allWordsArrayAfterSpecifyLenth.filter((v)=>{
-            v=v.toUpperCase();
-            let flag=true;
-            word.split('').map((singleChar,k)=>{
-                if(singleChar!='*'){
-                    if(v[k]!=singleChar){
-                        flag=false;
-                    }
-                }
-            })
-            return flag;
-        })
-        logger.info(`第${totalWordCount}个单词:　由于不是全*号，按照单词内容 ${word}　过滤, 过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
+
+    let allWordsArrayAfterFilter = allWordsArray.filter((v)=> {
+        return wordFilterCondition(v, word, alreadyConfirmWrongCharAr)
+    });
+
+
+    //　统计剩余单词中字符的出现频率
+    let objCount = analyseOccurenceOfWordAr(allWordsArrayAfterFilter, alreadyRequestCharAr);
+
+
+    let mostOccurenceChar = getMostOccurenceChar(objCount);
+    logger.info(`第${totalWordCount}个单词:按照长度 内容　${word} 猜错的单词${alreadyConfirmWrongCharAr.toString()} 过滤后共剩下 ${allWordsArrayAfterFilter.length}个 ,出现频率最高的字符是 ${mostOccurenceChar}`);
+
+
+    CONFIG.currentGuessWord.alreadyRequestCharAr.push(mostOccurenceChar);
+
+    return mostOccurenceChar;
+}
+/**
+ * 统计出息那最多的字符.set结构
+ * @param objCount
+ * @returns {*}
+ */
+function getMostOccurenceChar(objCount) {
+    let maxKey;
+    for (let i in objCount) {
+        if (!maxKey) {
+            maxKey = i;
+        } else if (maxKey && objCount[maxKey] < objCount[i]) {
+            maxKey = i;
+        }
     }
-
-    if(alreadyConfirmWrongCharAr.length>0){
-        allWordsArrayAfterSpecifyLenth=allWordsArrayAfterSpecifyLenth.filter((v)=>{
-            let flag=true;
-            if(checkStrContainEveryCharAr(v,alreadyConfirmWrongCharAr)){
-                flag=false;
-            }
-            return flag;
-        });
-        logger.info(`第${totalWordCount}个单词:　排除掉含有 ${alreadyConfirmWrongCharAr.toString()} 的单词, 过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
+    //TODO 如果没有匹配的字符，这里应该使用一个随机字符
+    if (!maxKey) {
+        return 'E';
     }
+    return maxKey.toUpperCase();
+}
 
+
+/**
+ * 统计单词数组总所有字符的出现频率，不统计已发送请求中的字符
+ */
+function analyseOccurenceOfWordAr(allWordsArrayAfterFilter, alreadyRequestCharAr) {
     let objCount = {};
-    allWordsArrayAfterSpecifyLenth.map((item)=> {
+    allWordsArrayAfterFilter.map((item)=> {
         let s = new Set();
         for (let i in item) {
             //如果是已经发送的猜测字符，那么下一次不继续发送了
-            if(!alreadyRequestCharAr.includes(item[i].toUpperCase())){
+            if (!alreadyRequestCharAr.includes(item[i].toUpperCase())) {
                 s.add(item[i]);
             }
         }
@@ -355,47 +366,92 @@ function getBestMatchChar() {
             }
         }
     })
-    let maxKey;
-    for (let i in objCount) {
-        if (!maxKey) {
-            maxKey = i;
-        } else if (maxKey && objCount[maxKey] < objCount[i]) {
-            maxKey = i;
-        }
-    }
-    //TODO 如果没有匹配的字符，这里应该使用一个随机字符
-    if(!maxKey){
-        return 'E';
-    }
-    let mostPossibleChar = maxKey.toUpperCase();
-    logger.info(`第${totalWordCount}个单词: 按照出现频率最高的字符是 ${mostPossibleChar} `);
 
-    CONFIG.currentGuessWord.alreadyRequestCharAr.push(mostPossibleChar);
-
-    return mostPossibleChar;
+    return objCount;
 }
 
+/**
+ * 单词的过滤条件
+ * @param word 每次循环的一行一个单词
+ */
+function wordFilterCondition(word, currentWord, alreadyConfirmWrongCharAr) {
+    let wordToUpperCase = word.toUpperCase();
+
+    //先按照长度过滤
+    if (wordToUpperCase.length != currentWord.length) {
+        return false;
+    }
+
+    //按照猜对的字符过滤
+    if (!checkWordAllAsterisks()) {
+        if (!checkByCorrectCharAr(wordToUpperCase, currentWord)) {
+            return false;
+        }
+    }
+
+    //按照猜错的字符过滤
+    if (alreadyConfirmWrongCharAr.length > 0) {
+        if (checkStrContainSomeCharAr(wordToUpperCase, alreadyConfirmWrongCharAr)) {
+            return false;
+        }
+    }
+
+
+    return true;
+}
+
+/**
+ * 按照猜对的字符除了＊号外一一对应
+ * @param wordToUpperCase
+ * @param currentWord
+ * @returns {boolean}
+ */
+function checkByCorrectCharAr(wordToUpperCase, currentWord) {
+    let flag = true;
+    currentWord.split('').map((singleChar, k)=> {
+        if (singleChar != '*') {
+            if (wordToUpperCase[k] != singleChar) {
+                flag = false;
+            }
+        }
+    })
+    return flag;
+}
 /**
  * 监测单词里面是否含有指定的字符数组.
  * 默认单词里面包含所有的字符数组
  */
-function checkStrContainEveryCharAr(str,charAr) {
-    let flag=true;
-    charAr.map((char)=>{
-        if(!str.includes(char)){
-            flag=false;
+function checkStrContainEveryCharAr(str, charAr) {
+    let flag = true;
+    charAr.map((char)=> {
+        if (!str.includes(char)) {
+            flag = false;
         }
     })
     return flag;
 }
 
 
+/**
+ * 监测单词里面是否含有某些字符数组的某些元素.
+ * 默认都不存在
+ * @param str
+ * @param charAr
+ */
+function checkStrContainSomeCharAr(str, charAr) {
+    let flag = false;
+    charAr.map((char)=> {
+        if (str.includes(char)) {
+            flag = true;
+        }
+    })
+    return flag;
+}
 
 
 function saveUserDataSync() {
-    writeUserData(JSON.stringify(CONFIG,null,2));
+    writeUserData(JSON.stringify(CONFIG, null, 2));
 }
-
 
 
 main();
