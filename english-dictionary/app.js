@@ -115,9 +115,9 @@ async function makeAGuess() {
     let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
     let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
 
-    //如果正在猜测第几次超过允许猜测的最大次数
-    if (currentGuessCount > numberOfGuessAllowedForEachWord) {
-        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
+    //如果正在猜测的错误次数超过允许猜测的最大次数
+    if (wrongGuessCountOfCurrentWord > numberOfGuessAllowedForEachWord) {
+        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
         initCurrentGuessWordStatus();
         await GiveMeAWord();
     } else {
@@ -167,13 +167,13 @@ async function checkArriveLimitWords() {
 async function wordHasGuessedOperation() {
     let {allWordsArray,wordsHasGuessed,currentGuessWord}=CONFIG;
     let {word}=currentGuessWord;
-    wordsHasGuessed.push(word);
+    CONFIG.wordsHasGuessed.push(word);
 
     //allWordsArray 里面删除这个单词
     let positiion=allWordsArray.indexOf(word);
     if(positiion!=-1){
-        allWordsArray.splice(positiion,1);
-        loggerfile.info(`-----　删除后剩余 ${allWordsArray.length}　个单词　------`);
+        CONFIG.allWordsArray=CONFIG.allWordsArray.splice(positiion,1);
+        loggerfile.info(`-----　删除 ${word} 后剩余 ${CONFIG.allWordsArray.length}　个单词　------`);
     }
     initCurrentGuessWordStatus();
     await GiveMeAWord();
