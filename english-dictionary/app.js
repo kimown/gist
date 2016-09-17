@@ -335,9 +335,4 @@ async function removeLogFile() {
 }
 
 
-function saveUserDataSync() {
-     writeUserData(JSON.stringify(CONFIG,null,2));
-}
-
-
 main();

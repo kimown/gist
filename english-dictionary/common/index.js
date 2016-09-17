@@ -6,12 +6,12 @@
 
 let {
     readUserData,
-    writeUserData
+    writeUserData,
 }= require('./operate-user-data');
 
 
 
 module.exports={
     readUserData,
-    writeUserData,
+    writeUserData
 };

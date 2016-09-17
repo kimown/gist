@@ -5,7 +5,7 @@
 
 'use strict';
 let {readFile,path}= require('./../../util');
-
+let configPath=require('./config-path');
 //请求url 　用户登陆名
 let {requestUrl, playerId}=require('./../../tmp/config.json');
 
@@ -68,7 +68,7 @@ async function initUserData() {
  * 读取预制的英文字典数据
  */
 async function getAllWords() {
-    const dictPath=path.join(__dirname,'..','wordsEn.txt');
+    let {dictPath}=configPath;
     let data = await readFile(dictPath);
     let data2str = data.toString();
     let wordsArray = data2str.split('\r');
