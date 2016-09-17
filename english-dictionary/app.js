@@ -79,14 +79,8 @@ async function startGame() {
  * https://github.com/strikingly/strikingly-interview-test-instructions#2-give-me-a-word
  */
 async function GiveMeAWord() {
-    let {currentGuessWord,numberOfWordsToGuess}=CONFIG;
-    let {totalWordCount}=currentGuessWord;
-    //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
-    if(totalWordCount>numberOfWordsToGuess){
-        await GetYourResult();
-        processExit();
-        return;
-    }
+
+    await checkArriveLimitWords();
 
     let postData = {
         sessionId: CONFIG.sessionId,
@@ -118,14 +112,8 @@ async function GiveMeAWord() {
  * 猜测当前的单词
  */
 async function makeAGuess() {
-    let {currentGuessWord, numberOfGuessAllowedForEachWord,numberOfWordsToGuess}=CONFIG;
+    let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
     let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
-    //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
-    if(totalWordCount>numberOfWordsToGuess){
-        await GetYourResult();
-        processExit();
-        return;
-    }
 
     //如果正在猜测第几次超过允许猜测的最大次数
     if (currentGuessCount > numberOfGuessAllowedForEachWord) {
@@ -159,6 +147,17 @@ async function makeAGuess() {
     }
 }
 
+
+async function checkArriveLimitWords() {
+    let {currentGuessWord,numberOfWordsToGuess}=CONFIG;
+    let {totalWordCount}=currentGuessWord;
+    //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
+    if(totalWordCount>numberOfWordsToGuess){
+        await GetYourResult();
+        processExit();
+        return;
+    }
+}
 
 /**
  * 如果猜中了单词，一些后续操作
