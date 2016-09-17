@@ -24,6 +24,12 @@ async function readUserData() {
     loggerfile.info('---------------初始化操作结束-------------');
     loggerfile.info('---------------Begin Game-------------');
 
+    //预制英文单词字典
+    loggerfile.info('------读取固定的字典数据开始 -------');
+    let allWords = await  getAllWords();
+    loggerfile.info(`------读取固定的字典数据结束，共　${allWords.length}　个单词 -------`);
+
+
     let config;
     if (checkBeginNewGame()) {
         loggerfile.info('-------初始化用户数据开始 -------');
@@ -36,8 +42,8 @@ async function readUserData() {
         loggerfile.info('------ 断线重连,恢复用户上次的数据　-------');
     }
 
-    //预制英文单词字典
-    config.allWordsArray = await  getAllWords();
+
+    config.allWordsArray = allWords;
 
     return config;
 
@@ -77,7 +83,7 @@ function checkUserDataIsValid(path) {
     let flag = true;
 
     let config = require(path);
-    if (!(config.hasOwnProperty('sessionId') && config.sessionId)) {
+    if ((config.hasOwnProperty('sessionId')) && config.sessionId) {
         flag = false;
     }
 
