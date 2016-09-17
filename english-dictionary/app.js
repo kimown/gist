@@ -122,6 +122,7 @@ async function makeAGuess() {
         let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
         let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
         logger.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
+
         let mostPossibleChar = getBestMatchChar();
 
         let postData = {
@@ -137,8 +138,11 @@ async function makeAGuess() {
         });
 
         setCurrentGuessStatus(res);
+
+
         //如果单词没有全部猜对，递归调用猜词方法;否则直接nextWord
-        if(checkWordCotainAsterisks()){
+        //如果正在猜测的错误次数超过允许猜测的最大次数,nextWorld
+        if(checkNeedNextWord()||checkWordCotainAsterisks()){
             await makeAGuess();
         }else{
             loggerfile.info(`-----　第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} ------`);
@@ -146,6 +150,8 @@ async function makeAGuess() {
         }
     }
 }
+
+
 
 /**
  * 是否需要下一个单词 ,默认走正常猜词流程
@@ -157,7 +163,7 @@ function checkNeedNextWord() {
 
 
     //如果正在猜测的错误次数超过允许猜测的最大次数 或者　超过20次　
-    if (wrongGuessCountOfCurrentWord > numberOfGuessAllowedForEachWord) {
+    if (wrongGuessCountOfCurrentWord == numberOfGuessAllowedForEachWord) {
         loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
         flag=true;
     }else if(currentGuessCount>20){
@@ -265,14 +271,13 @@ function checkWordAllAsterisks() {
 function setCurrentGuessStatus(res) {
     let {body, ok}=res;
     let {data}=body;
+
     let {totalWordCount, word, wrongGuessCountOfCurrentWord}=data;
     if (ok == true) {
         CONFIG.currentGuessWord.totalWordCount = totalWordCount;
         CONFIG.currentGuessWord.word = word;
         CONFIG.currentGuessWord.wrongGuessCountOfCurrentWord = wrongGuessCountOfCurrentWord;
         CONFIG.currentGuessWord.currentGuessCount = ++CONFIG.currentGuessWord.currentGuessCount;
-    } else {
-
     }
 }
 
