@@ -137,6 +137,8 @@ async function makeAGuess() {
             url: CONFIG.requestUrl
         });
 
+
+        //TODO 如果mostPossibleChar不在返回单词里面，去除含有mostPossibleChar的单词
         setCurrentGuessStatus(res);
 
 
