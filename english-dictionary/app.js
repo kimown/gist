@@ -112,15 +112,15 @@ async function GiveMeAWord() {
  * 猜测当前的单词
  */
 async function makeAGuess() {
-    let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
-    let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
 
-    //如果正在猜测的错误次数超过允许猜测的最大次数
-    if (wrongGuessCountOfCurrentWord > numberOfGuessAllowedForEachWord) {
-        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
+    let isNeedNextWord=  checkNeedNextWord();
+
+    if(isNeedNextWord){
         initCurrentGuessWordStatus();
         await GiveMeAWord();
-    } else {
+    }else {
+        let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
+        let {wrongGuessCountOfCurrentWord, totalWordCount, word,currentGuessCount}=currentGuessWord;
         logger.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
         let mostPossibleChar = getBestMatchChar();
 
@@ -147,6 +147,25 @@ async function makeAGuess() {
     }
 }
 
+/**
+ * 是否需要下一个单词 ,默认走正常猜词流程
+ */
+function checkNeedNextWord() {
+    let flag=false;
+    let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
+    let {wrongGuessCountOfCurrentWord, totalWordCount,currentGuessCount}=currentGuessWord;
+
+
+    //如果正在猜测的错误次数超过允许猜测的最大次数 或者　超过20次　
+    if (wrongGuessCountOfCurrentWord > numberOfGuessAllowedForEachWord) {
+        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
+        flag=true;
+    }else if(currentGuessCount>20){
+        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜测次数已经超过 20　 ，开始下一轮.......failing`);
+        flag=true;
+    }
+    return flag;
+}
 
 async function checkArriveLimitWords() {
     let {currentGuessWord,numberOfWordsToGuess}=CONFIG;
