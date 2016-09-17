@@ -248,8 +248,10 @@ function processExit() {
 function initCurrentGuessWordStatus() {
     let {currentGuessWord}=CONFIG;
     currentGuessWord.word=null;
+    currentGuessWord.alreadyConfirmWrongCharAr=[];
     currentGuessWord.currentGuessCount=1;
     currentGuessWord.alreadyRequestCharAr=[];
+    currentGuessWord.alreadyConfirmWrongCharAr=[];
     //重点是这个猜词的个数+1
     currentGuessWord.totalWordCount=++currentGuessWord.totalWordCount;
     currentGuessWord.wrongGuessCountOfCurrentWord=0;
@@ -301,8 +303,8 @@ function setCurrentGuessStatus(res) {
  * 获取最可能的字符
  */
 function getBestMatchChar() {
-    let {currentGuessWord, allWordsArray,alreadyConfirmWrongCharAr}=CONFIG;
-    let {word, totalWordCount,alreadyRequestCharAr}=currentGuessWord;
+    let {currentGuessWord, allWordsArray}=CONFIG;
+    let {word, totalWordCount,alreadyRequestCharAr,alreadyConfirmWrongCharAr}=currentGuessWord;
     let wordLength = word.length;
     let allWordsArrayAfterSpecifyLenth = allWordsArray.filter((v)=> {
         return v.trim().length == wordLength && v.trim().indexOf("'") == -1;
