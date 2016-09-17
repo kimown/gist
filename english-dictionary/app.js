@@ -121,7 +121,8 @@ async function makeAGuess() {
     } else {
         let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
         let {wrongGuessCountOfCurrentWord, totalWordCount, word, currentGuessCount}=currentGuessWord;
-        logger.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测,单词内容是 ${word},已经猜错了${wrongGuessCountOfCurrentWord}次(${numberOfGuessAllowedForEachWord})`);
+        logger.info('\n\n');
+        logger.info(`第    ${totalWordCount}    个单词: 第    ${currentGuessCount}    次猜测,单词内容是第    ${word}    ,已经猜错了第    ${wrongGuessCountOfCurrentWord}    次(${numberOfGuessAllowedForEachWord})`);
 
         let mostPossibleChar = getBestMatchChar();
 
@@ -151,7 +152,7 @@ async function makeAGuess() {
         if (checkNeedNextWord() || checkWordCotainAsterisks()) {
             await makeAGuess();
         } else {
-            loggerfile.info(`-----　第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} ------`);
+            loggerfile.info(`----------------------------------第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} --------------------------`);
             await wordHasGuessedOperation();
         }
     }
@@ -177,10 +178,10 @@ function checkNeedNextWord() {
 
     //如果正在猜测的错误次数超过允许猜测的最大次数 或者　超过20次　
     if (wrongGuessCountOfCurrentWord == numberOfGuessAllowedForEachWord) {
-        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
+        loggerfile.error(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
         flag = true;
     } else if (currentGuessCount > 20) {
-        loggerfile.info(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜测次数已经超过 20　 ，开始下一轮.......failing`);
+        loggerfile.error(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜测次数已经超过 20　 ，开始下一轮.......failing`);
         flag = true;
     }
     return flag;
@@ -316,7 +317,7 @@ function getBestMatchChar() {
 
 
     let mostOccurenceChar = getMostOccurenceChar(objCount);
-    logger.info(`第${totalWordCount}个单词:按照长度 内容　${word} 猜错的单词${alreadyConfirmWrongCharAr.toString()} 过滤后共剩下 ${allWordsArrayAfterFilter.length}个 ,出现频率最高的字符是 ${mostOccurenceChar}`);
+    logger.info(`第    ${totalWordCount}    个单词:  错误字符：${alreadyConfirmWrongCharAr.toString()}    过滤后共剩下    ${allWordsArrayAfterFilter.length}    个 ,出现频率最高的字符是     ${mostOccurenceChar}`);
 
 
     CONFIG.currentGuessWord.alreadyRequestCharAr.push(mostOccurenceChar);
