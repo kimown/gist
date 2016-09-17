@@ -23,6 +23,9 @@ async function initUserData() {
     //预制英文单词字典
     let allWordsArray=await  getAllWords();
 
+    //已经猜中的单词
+    let wordsHasGuessed=[];
+
     let configJson=getConfigJson();
 
     //用户id,必填
@@ -53,7 +56,7 @@ async function initUserData() {
 
     let config=Object.assign({},
         {action},
-        {allWordsArray},
+        {allWordsArray},{wordsHasGuessed},
         configJson,{sessionId},
         {numberOfGuessAllowedForEachWord},{numberOfWordsToGuess},
         {currentGuessWord}

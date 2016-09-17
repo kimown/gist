@@ -79,6 +79,15 @@ async function startGame() {
  * https://github.com/strikingly/strikingly-interview-test-instructions#2-give-me-a-word
  */
 async function GiveMeAWord() {
+    let {currentGuessWord,numberOfWordsToGuess}=CONFIG;
+    let {totalWordCount}=currentGuessWord;
+    //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
+    if(totalWordCount>numberOfWordsToGuess){
+        await GetYourResult();
+        processExit();
+        return;
+    }
+
     let postData = {
         sessionId: CONFIG.sessionId,
         action: CONFIG.action.nextWord
@@ -145,12 +154,31 @@ async function makeAGuess() {
             await makeAGuess();
         }else{
             loggerfile.info(`-----　第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} ------`);
-            initCurrentGuessWordStatus();
-            await GiveMeAWord();
+            await wordHasGuessedOperation();
         }
     }
 }
 
+
+/**
+ * 如果猜中了单词，一些后续操作
+ * -　从整体的单词库里面删除这个单词　
+ *
+ */
+async function wordHasGuessedOperation() {
+    let {allWordsArray,wordsHasGuessed,currentGuessWord}=CONFIG;
+    let {word}=currentGuessWord;
+    wordsHasGuessed.push(word);
+
+    //allWordsArray 里面删除这个单词
+    let positiion=allWordsArray.indexOf(word);
+    if(positiion!=-1){
+        allWordsArray.splice(positiion,1);
+        loggerfile.info(`-----　删除后剩余 ${allWordsArray.length}　个单词　------`);
+    }
+    initCurrentGuessWordStatus();
+    await GiveMeAWord();
+}
 
 /**
  *
