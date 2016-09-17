@@ -31,10 +31,13 @@ async function readUserData() {
         loggerfile.info('------ 断线重连,重新开始上次断线的游戏场景　-------');
         //TODO 需要验证上次用户保存的数据的正确性，否则......
         config=require(userDataPath);
+        loggerfile.info('------ 断线重连,恢复用户上次的数据　-------');
     }else{
-        loggerfile.info('-----　-初始化用户数据 -------');
-         config=　await　initUserData()
+        loggerfile.info('-----　-初始化用户数据开始 -------');
+         config=　await　initUserData();
+        loggerfile.info('-----　-初始化用户数据结束 -------');
     }
+
     return config;
 
 }
