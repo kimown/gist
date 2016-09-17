@@ -24,8 +24,7 @@ async function main() {
     let {readPath, writePath, wordContainned}=CONFIG;
     let {EOL}=os;
     try {
-        let data = await readFile(readPath);
-        let data2str = data.toString();
+        let data2str = await readFile(readPath);
         let wordsArray = data2str.split(EOL);
         console.log(`过滤出包含字母${wordContainned}的所有单词,文件地址:${writePath}`);
         let wordsArrayAfterFilter = wordsArray.filter((word)=> {

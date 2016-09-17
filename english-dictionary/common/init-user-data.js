@@ -80,8 +80,7 @@ function getConfigJson() {
  */
 async function getAllWords() {
     let {dictPath}=configPath;
-    let data = await readFile(dictPath);
-    let data2str = data.toString();
+    let data2str = await readFile(dictPath);
     let wordsArray = data2str.split('\r');
     return wordsArray;
 }

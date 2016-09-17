@@ -286,6 +286,10 @@ function getBestMatchChar() {
             maxKey = i;
         }
     }
+    //TODO 如果没有匹配的字符，这里应该使用一个随机字符
+    if(!maxKey){
+        return 'E';
+    }
     let mostPossibleChar = maxKey.toUpperCase();
     logger.info(`第${totalWordCount}个单词: 按照出现频率最高的字符是 ${mostPossibleChar} `);
 

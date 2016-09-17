@@ -21,8 +21,7 @@ async function main() {
     let {readPath, writePath}=CONFIG;
     let {EOL}=os;
     try {
-        let data = await readFile(readPath);
-        let data2str = data.toString();
+        let data2str = await readFile(readPath);
         let wordsArray = data2str.split(EOL);
         let wordLength = getRandomLength();
         console.log(`过滤出长度为${wordLength}的所有单词,文件地址:${writePath}`);

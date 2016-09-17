@@ -28,8 +28,9 @@ exports.readFile = function (path) {
         fs.readFile(path, (err, data) => {
             if (err) {
                 reject(err);
+            }else{
+                resolve(data.toString());
             }
-            resolve(data);
         });
     })
 };
