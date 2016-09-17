@@ -5,7 +5,7 @@
 
 'use strict';
 
-let {request,rmFile}= require('./../util');
+let {request,rmFileSync}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
 let {writeUserData,readUserData}=require('./common');
@@ -115,7 +115,7 @@ async function makeAGuess() {
     //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
     if(totalWordCount>numberOfWordsToGuess){
         await GetYourResult();
-        await processExit();
+        processExit();
         return;
     }
 
@@ -175,7 +175,7 @@ function processExit() {
     loggerfile.info(`主动退出程序，游戏结束,之后pm2会自动重启,然后开启新一轮的游戏`);
     //删除data.json
     let {userDataPath}=configPath;
-    rmFile(userDataPath);
+    rmFileSync(userDataPath);
 }
 
 /**

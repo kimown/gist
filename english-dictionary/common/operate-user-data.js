@@ -6,7 +6,7 @@
 
 'use strict';
 
-let {writeFileSync,existFileSync,rmFile}= require('./../../util');
+let {writeFileSync,existFileSync,rmFileSync}= require('./../../util');
 
 let initUserData=require('./init-user-data');
 
@@ -64,18 +64,15 @@ function writeUserData(data) {
  * - 清除日志文件
  */
 async function initOperation() {
-    await removeLogFile();
-
-
-
+    removeLogFile();
 }
 
 /**
  * 删除日志文件
  */
-async function removeLogFile() {
+function removeLogFile() {
     let {logFilePath}=configPath;
-    await rmFile(logFilePath);
+    rmFileSync(logFilePath);
 }
 
 module.exports={

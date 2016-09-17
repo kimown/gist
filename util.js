@@ -111,7 +111,7 @@ exports.os = os;
 
 exports.path=path;
 
-exports.rmFile = function (absolutePath) {
+exports.rmFileSync = function (absolutePath) {
     checkIsAbsoultePath(absolutePath);
     try {
         fs.unlinkSync(absolutePath);
