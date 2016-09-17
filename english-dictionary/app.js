@@ -25,9 +25,18 @@ let CONFIG={};
 
 
 async function main() {
+
     //里面保存了所有的用户数据．
     CONFIG= await readUserData();
-    await startGame();
+
+    let {sessionId}=CONFIG;
+    if(sessionId){
+        //断线重玩游戏
+        await makeAGuess();
+    }else{
+        //new 一个game
+        await startGame();
+    }
 }
 
 
