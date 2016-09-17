@@ -12,7 +12,7 @@ let initUserData=require('./init-user-data');
 
 let loggerfile = require('./../../loggerfile');
 
-const userDataPath=path.join(__dirname,'..','data.json');
+let configPath=require('./config-path');
 
 /**
  * 读取用户数据，主要是为了断线重连
@@ -21,6 +21,7 @@ const userDataPath=path.join(__dirname,'..','data.json');
  */
 async function readUserData() {
     loggerfile.info('---------------Begin Game-------------11');
+    let {userDataPath}=configPath;
 
     let config;
     if(existFileSync(userDataPath)){

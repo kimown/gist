@@ -6,8 +6,7 @@
 'use strict';
 let {readFile}= require('./../../util');
 let configPath=require('./config-path');
-//请求url 　用户登陆名
-let {requestUrl, playerId}=require('./../../tmp/config.json');
+
 
 let loggerfile = require('./../../loggerfile');
 
@@ -23,6 +22,8 @@ async function initUserData() {
 
     //预制英文单词字典
     let allWordsArray=await  getAllWords();
+
+    let configJson=getConfigJson();
 
     //用户id,必填
     let sessionId=null;
@@ -49,10 +50,11 @@ async function initUserData() {
         // 这个单词已经猜错的次数，如果该次数等于　numberOfGuessAllowedForEachWord，则猜测次数已达到上限，直接nextWord
         wrongGuessCountOfCurrentWord: 0
     };
+
     let config=Object.assign({},
         {action},
         {allWordsArray},
-        {requestUrl},{playerId},{sessionId},
+        configJson,{sessionId},
         {numberOfGuessAllowedForEachWord},{numberOfWordsToGuess},
         {currentGuessWord}
     );
@@ -61,6 +63,16 @@ async function initUserData() {
     return config;
 
 };
+
+function getConfigJson() {
+    let {configJsonPath}=configPath;
+
+    // 里面包含了　请求url 用户登陆名
+    let configJson=require(configJsonPath);
+
+    return configJson;
+
+}
 
 
 /**
