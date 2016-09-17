@@ -27,14 +27,13 @@ async function readUserData() {
 
     let config;
     if(checkBeginNewGame()){
+        loggerfile.info('-------初始化用户数据开始 -------');
+        config=　await　initUserData();
+        loggerfile.info('------初始化用户数据结束 -------');
+    }else{
         loggerfile.info('------ 断线重连,重新开始上次断线的游戏场景　-------');
-
         config=require(userDataPath);
         loggerfile.info('------ 断线重连,恢复用户上次的数据　-------');
-    }else{
-        loggerfile.info('-----　-初始化用户数据开始 -------');
-        config=　await　initUserData();
-        loggerfile.info('-----　-初始化用户数据结束 -------');
     }
 
     return config;
@@ -58,6 +57,10 @@ function checkBeginNewGame() {
             }
         }catch(err){
             flag=false;
+        }
+        if(flag==false){
+            loggerfile.info('-----　有情况：删除文件 -------');
+            removeDataJson();
         }
     }
     return flag;
@@ -94,6 +97,11 @@ async function initOperation() {
 function removeLogFile() {
     let {logFilePath}=configPath;
     rmFileSync(logFilePath);
+}
+
+function removeDataJson() {
+    let {userDataPath}=configPath;
+    rmFileSync(userDataPath);
 }
 
 module.exports={
