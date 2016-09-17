@@ -82,9 +82,16 @@ async function GiveMeAWord() {
 
     let isArriveLimitWords = await checkArriveLimitWords();
     if (isArriveLimitWords) {
-        return;
-    }
 
+        //　查询分数，退出程序．
+        await operationBeforeExit();
+    } else {
+        //　向服务器请求单词
+        await sendRequireNextWordRequest();
+    }
+}
+
+async function sendRequireNextWordRequest() {
     let postData = {
         sessionId: CONFIG.sessionId,
         action: CONFIG.action.nextWord
@@ -106,6 +113,10 @@ async function GiveMeAWord() {
     } else {
         logger.error(`获取猜谜单词失败!!!失败原因:`, res.body);
     }
+}
+async function operationBeforeExit() {
+    await GetYourResult();
+    processExit();
 }
 
 
@@ -203,8 +214,7 @@ async function checkArriveLimitWords() {
     let {totalWordCount}=currentGuessWord;
     //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
     if (totalWordCount > numberOfWordsToGuess) {
-        await GetYourResult();
-        processExit();
+
         return true;
     }
     return false;
@@ -216,7 +226,7 @@ async function checkArriveLimitWords() {
  *
  */
 async function wordHasGuessedOperation() {
-    let {allWordsArray, wordsHasGuessed, currentGuessWord}=CONFIG;
+    let {allWordsArray, currentGuessWord}=CONFIG;
     let {word}=currentGuessWord;
     CONFIG.wordsHasGuessed.push(word);
 
@@ -431,20 +441,6 @@ function checkByCorrectCharAr(wordToUpperCase, currentWord) {
     })
     return flag;
 }
-/**
- * 监测单词里面是否含有指定的字符数组.
- * 默认单词里面包含所有的字符数组
- */
-function checkStrContainEveryCharAr(str, charAr) {
-    let flag = true;
-    charAr.map((char)=> {
-        if (!str.includes(char)) {
-            flag = false;
-        }
-    })
-    return flag;
-}
-
 
 /**
  * 监测单词里面是否含有某些字符数组的某些元素.
@@ -464,6 +460,7 @@ function checkStrContainSomeCharAr(str, charAr) {
 
 
 function saveUserDataSync() {
+
     writeUserData(JSON.stringify(CONFIG, null, 2));
 }
 
