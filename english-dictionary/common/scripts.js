@@ -5,19 +5,32 @@
  */
 'use strict';
 
-let {readFile,path}= require('./../../util');
+let {readFile,path,writeFileSync}= require('./../../util');
 
 const dictFilePath=path.join(__dirname,'enwiktionary-latest-all-titles-in-ns0');
+const dictNewFilePath=path.join(__dirname,'enwiktionary-latest-all-titles-in-ns0-filter.txt');
 
 
 async function main() {
     let allDict2str = await readFile(dictFilePath);
     let allDictArray = allDict2str.split('\n');
+    console.log(`初始一共　${allDictArray.length} 个单词`);
     let allDictArrayAterFilter = filterAllDictArray(allDictArray);
+    console.log(`按照a-zA-Z过滤后，共　${allDictArrayAterFilter.length} 个单词`);
+    let dictArrayAfterFilterSameChar=filterAllDictArrayBySameChar(allDictArrayAterFilter);
+    console.log(`将字符全部相同的单词过滤后，共　${dictArrayAfterFilterSameChar.length}　个单词`);
 
-    return allDictArrayAterFilter;
+    writeFileSync(dictNewFilePath,allDictArrayAterFilter.join('\n').toString());
+
 }
 
+
+function filterAllDictArrayBySameChar(allDictArrayAterFilter) {
+    let dictArray=allDictArrayAterFilter.filter((v)=>{
+        return checkIsSameChar(v);
+    });
+    return dictArray;
+}
 
 /**
  * 过滤出字符，特殊字符除外
@@ -45,11 +58,25 @@ function checkAllContainsChar(str) {
  * @param char
  * @returns {boolean}
  */
-function checkIsChar(char) {
-    let flag=false;
-    if(('a'<=char&&char<='z' )|| ('A'<=char&&char<='Z')){
-        flag=true;
-    }
+function checkIsSameChar(str) {
+    let flag=true;
+
+
+    let char;
+    let loopFlag=true;
+    str.split('').every((strItem)=>{
+        if(!char){
+            char=strItem;
+        }else{
+            if(strItem!=char){
+                flag=false;
+                loopFlag=false;
+            }
+        }
+        return loopFlag;
+    });
+
+
     return flag;
 }
 
