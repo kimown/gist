@@ -7,6 +7,8 @@
 
 
 let loggerfile = require('./../../loggerfile')();
+let configPath = require('./config-path');
+
 
 async function initUserData() {
 
