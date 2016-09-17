@@ -10,6 +10,7 @@ let {path}= require('./../../util');
 const dictPath=path.join(__dirname,'..','wordsEn.txt');
 const configJsonPath=path.join(__dirname,'..','..','tmp','config.json');
 const userDataPath=path.join(__dirname,'..','data.json');
+const logFilePath=path.join(__dirname,'..','..','created-logfile.log');
 
 let configPath={
 
@@ -20,7 +21,10 @@ let configPath={
     configJsonPath,
 
     // 用户上次游戏数据的保存位置
-    userDataPath
+    userDataPath,
+
+    //日志文件路径
+    logFilePath
 };
 
 module.exports=configPath;

@@ -6,7 +6,7 @@
 
 'use strict';
 
-let {writeFileSync,existFileSync,path}= require('./../../util');
+let {writeFileSync,existFileSync,rmFile}= require('./../../util');
 
 let initUserData=require('./init-user-data');
 
@@ -20,7 +20,10 @@ let configPath=require('./config-path');
  * - 如果没有，则初始化用户数据
  */
 async function readUserData() {
-    loggerfile.info('---------------Begin Game-------------11');
+    loggerfile.info('---------------初始化操作开始-------------');
+    await initOperation();
+    loggerfile.info('---------------初始化操作结束-------------');
+    loggerfile.info('---------------Begin Game-------------');
     let {userDataPath}=configPath;
 
     let config;
@@ -51,6 +54,25 @@ function writeUserData(data) {
 
     writeFileSync(userDataPath,data);
 
+}
+
+/**
+ * 运行程序前的一些初始化操作
+ * - 清除日志文件
+ */
+async function initOperation() {
+    await removeLogFile();
+
+
+
+}
+
+/**
+ * 删除日志文件
+ */
+async function removeLogFile() {
+    let {logFilePath}=configPath;
+    await rmFile(logFilePath);
 }
 
 module.exports={

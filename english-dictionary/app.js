@@ -5,7 +5,7 @@
 
 'use strict';
 
-let {request,rmFile,path}= require('./../util');
+let {request}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
 let {writeUserData,readUserData}=require('./common');
@@ -27,8 +27,6 @@ let CONFIG={};
 async function main() {
     //里面保存了所有的用户数据．
     CONFIG= await readUserData();
-
-    await removeLogFile();
     await startGame();
 }
 
@@ -277,15 +275,6 @@ function getBestMatchChar() {
     CONFIG.currentGuessWord.alreadyRequestCharAr.push(mostPossibleChar);
 
     return mostPossibleChar;
-}
-
-
-/**
- * 删除日志文件
- */
-async function removeLogFile() {
-    let filePath = path.join(__dirname,'..','created-logfile.log');
-    await rmFile(filePath);
 }
 
 
