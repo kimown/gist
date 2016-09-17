@@ -9,7 +9,7 @@ let {request,rmFile}= require('./../util');
 let logger = require('./../logger');
 let loggerfile = require('./../loggerfile');
 let {writeUserData,readUserData}=require('./common');
-let configPath=require('./config-path');
+let configPath=require('./common/config-path');
 
 
 process.on('uncaughtException', (err) => {
