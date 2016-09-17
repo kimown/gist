@@ -10,7 +10,8 @@ let {readFile,writeFileSync}= require('./../../util');
 
 /**
  * 读取用户数据，主要是为了断线重连
- *
+ * - 如果有用户数据data.json，读取数据作为CONFIG.
+ * - 如果没有，则初始化用户数据
  */
 async function readUserData() {
 

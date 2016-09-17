@@ -116,3 +116,18 @@ exports.rmFile = function (absolutePath) {
 
 // http://unix.stackexchange.com/questions/554/how-to-monitor-cpu-memory-usage-of-a-single-process
 
+
+/**
+ * https://nodejs.org/dist/latest-v4.x/docs/api/fs.html#fs_fs_access_path_mode_callback
+ * @param absoultePath
+ */
+exports.existFileSync=function (absoultePath) {
+    let flag=true;
+    try{
+        fs.accessSync(absoultePath);
+    }catch (err){
+        flag=false;
+    }
+    return flag;
+};
+

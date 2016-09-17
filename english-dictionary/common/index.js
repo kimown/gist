@@ -3,7 +3,6 @@
  */
 
 'use strict';
-// let initUserData=require('./init-user-data');
 
 let {
     readUserData,
@@ -15,5 +14,4 @@ let {
 module.exports={
     readUserData,
     writeUserData,
-    // initUserData
 };
