@@ -18,8 +18,8 @@ process.on('uncaughtException', (err) => {
 
 process.on('exit',(code) => {
     //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
-    saveUserDataSync();
-    console.log(`About to exit with code: ${code}`);
+    // saveUserDataSync();
+    console.log(`程序退出了About to exit with code: ${code}`);
 });
 
 let CONFIG={};

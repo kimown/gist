@@ -21,7 +21,7 @@ let configPath=require('./config-path');
  */
 async function readUserData() {
     loggerfile.info('---------------初始化操作开始-------------');
-    await initOperation();
+    initOperation();
     loggerfile.info('---------------初始化操作结束-------------');
     loggerfile.info('---------------Begin Game-------------');
 
@@ -31,6 +31,7 @@ async function readUserData() {
         config=　await　initUserData();
         loggerfile.info('------初始化用户数据结束 -------');
     }else{
+        let {userDataPath}=configPath;
         loggerfile.info('------ 断线重连,重新开始上次断线的游戏场景　-------');
         config=require(userDataPath);
         loggerfile.info('------ 断线重连,恢复用户上次的数据　-------');
@@ -43,26 +44,31 @@ async function readUserData() {
 /**
  * 判断是重新开始游戏　还是新建游戏,默认新建游戏
  *
- * //TODO 需要验证上次用户保存的数据的正确性，否则......
- *
  */
 function checkBeginNewGame() {
    let  flag=true;
     let {userDataPath}=configPath;
     if(existFileSync(userDataPath)){
-        try{
-            let config=require(userDataPath);
-            if(config.hasOwnProperty('sessionId')&&config.sessionId){
-                flag=false;
-            }
-        }catch(err){
+        if(checkUserDataIsValid(userDataPath)){
             flag=false;
-        }
-        if(flag==false){
-            loggerfile.info('-----　有情况：删除文件 -------');
+        }else{
+            loggerfile.info('-----　data.json文件里面没有sessionId,有情况：删除文件 -------');
             removeDataJson();
         }
     }
+    return flag;
+}
+/**
+ * 需要验证上次用户保存的数据的正确性
+ */
+function checkUserDataIsValid(path) {
+    let flag=true;
+
+    let config=require(path);
+    if(!(config.hasOwnProperty('sessionId')&&config.sessionId)){
+        flag=false;
+    }
+
     return flag;
 }
 
@@ -86,7 +92,7 @@ function writeUserData(data) {
  * 运行程序前的一些初始化操作
  * - 清除日志文件
  */
-async function initOperation() {
+function initOperation() {
     removeLogFile();
 
 }
