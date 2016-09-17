@@ -22,10 +22,10 @@ async function main() {
 
 
 
-    let dictArrayAfterFilterSameChar=filterAllDictArrayBySameChar(allDictArrayAterFilter);
-    console.log(`将字符全部相同的单词过滤后，共　${dictArrayAfterFilterSameChar.length}　个单词`);
+    // let dictArrayAfterFilterSameChar=filterAllDictArrayBySameChar(allDictArrayAterFilter);
+    // console.log(`将字符全部相同的单词过滤后，共　${dictArrayAfterFilterSameChar.length}　个单词`);
 
-    writeFileSync(dictNewFilePath,dictArrayAfterFilterSameChar.join('\n').toString());
+    writeFileSync(dictNewFilePath,allDictArrayAterFilter.join('\n').toString());
 
 }
 
