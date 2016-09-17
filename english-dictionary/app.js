@@ -18,7 +18,7 @@ process.on('uncaughtException', (err) => {
 
 process.on('exit',(code) => {
     //如果程序异常退出且 totalWordCount 没有达到 一共要猜测的单词数量 ,保存用户数据
-    // saveUserDataSync();
+    saveUserDataSync();
     console.log(`程序退出了About to exit with code: ${code}`);
 });
 
@@ -210,7 +210,7 @@ async function wordHasGuessedOperation() {
     //allWordsArray 里面删除这个单词
     let positiion=allWordsArray.indexOf(word);
     if(positiion!=-1){
-        CONFIG.allWordsArray=CONFIG.allWordsArray.splice(positiion,1);
+        CONFIG.allWordsArray.splice(positiion,1);
         loggerfile.info(`-----　删除 ${word} 后剩余 ${CONFIG.allWordsArray.length}　个单词　------`);
     }
     initCurrentGuessWordStatus();
