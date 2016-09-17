@@ -7,7 +7,7 @@ require('babel-register')({
     presets: ['latest']
 });
 require("babel-polyfill");
-require('./common/scripts');
+require('./app');
 
 
 
