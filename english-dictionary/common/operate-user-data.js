@@ -24,17 +24,16 @@ async function readUserData() {
     await initOperation();
     loggerfile.info('---------------初始化操作结束-------------');
     loggerfile.info('---------------Begin Game-------------');
-    let {userDataPath}=configPath;
 
     let config;
-    if(existFileSync(userDataPath)){
+    if(checkBeginNewGame()){
         loggerfile.info('------ 断线重连,重新开始上次断线的游戏场景　-------');
-        //TODO 需要验证上次用户保存的数据的正确性，否则......
+
         config=require(userDataPath);
         loggerfile.info('------ 断线重连,恢复用户上次的数据　-------');
     }else{
         loggerfile.info('-----　-初始化用户数据开始 -------');
-         config=　await　initUserData();
+        config=　await　initUserData();
         loggerfile.info('-----　-初始化用户数据结束 -------');
     }
 
@@ -42,6 +41,27 @@ async function readUserData() {
 
 }
 
+/**
+ * 判断是重新开始游戏　还是新建游戏,默认新建游戏
+ *
+ * //TODO 需要验证上次用户保存的数据的正确性，否则......
+ *
+ */
+function checkBeginNewGame() {
+   let  flag=true;
+    let {userDataPath}=configPath;
+    if(existFileSync(userDataPath)){
+        try{
+            let config=require(userDataPath);
+            if(config.hasOwnProperty('sessionId')&&config.sessionId){
+                flag=false;
+            }
+        }catch(err){
+            flag=false;
+        }
+    }
+    return flag;
+}
 
 /**
  * 保存用户数据
@@ -65,6 +85,7 @@ function writeUserData(data) {
  */
 async function initOperation() {
     removeLogFile();
+
 }
 
 /**
