@@ -141,6 +141,10 @@ async function makeAGuess() {
         //TODO 如果mostPossibleChar不在返回单词里面，去除含有mostPossibleChar的单词
         setCurrentGuessStatus(res);
 
+        //如果字符没有猜对
+        if(!checkGuessCorrect(mostPossibleChar)){
+            CONFIG.currentGuessWord.alreadyConfirmWrongCharAr.push(mostPossibleChar);
+        }
 
         //如果单词没有全部猜对，递归调用猜词方法;否则直接nextWord
         //如果正在猜测的错误次数超过允许猜测的最大次数,nextWorld
@@ -153,7 +157,14 @@ async function makeAGuess() {
     }
 }
 
-
+/**
+ * 检查发送的字符是否正确
+ */
+function checkGuessCorrect(mostPossibleChar) {
+    let {currentGuessWord}=CONFIG;
+    let { word}=currentGuessWord;
+    return word.includes(mostPossibleChar)
+}
 
 /**
  * 是否需要下一个单词 ,默认走正常猜词流程
@@ -290,7 +301,7 @@ function setCurrentGuessStatus(res) {
  * 获取最可能的字符
  */
 function getBestMatchChar() {
-    let {currentGuessWord, allWordsArray}=CONFIG;
+    let {currentGuessWord, allWordsArray,alreadyConfirmWrongCharAr}=CONFIG;
     let {word, totalWordCount,alreadyRequestCharAr}=currentGuessWord;
     let wordLength = word.length;
     let allWordsArrayAfterSpecifyLenth = allWordsArray.filter((v)=> {
@@ -312,6 +323,17 @@ function getBestMatchChar() {
             return flag;
         })
         logger.info(`第${totalWordCount}个单词:　由于不是全*号，按照单词内容 ${word}　过滤, 过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
+    }
+
+    if(alreadyConfirmWrongCharAr.length>0){
+        allWordsArrayAfterSpecifyLenth=allWordsArrayAfterSpecifyLenth.filter((v)=>{
+            let flag=true;
+            if(checkStrContainEveryCharAr(v,alreadyConfirmWrongCharAr)){
+                flag=false;
+            }
+            return flag;
+        });
+        logger.info(`第${totalWordCount}个单词:　排除掉含有 ${alreadyConfirmWrongCharAr.toString()} 的单词, 过滤后共剩下 ${allWordsArrayAfterSpecifyLenth.length}个`);
     }
 
     let objCount = {};
@@ -350,6 +372,22 @@ function getBestMatchChar() {
 
     return mostPossibleChar;
 }
+
+/**
+ * 监测单词里面是否含有指定的字符数组.
+ * 默认单词里面包含所有的字符数组
+ */
+function checkStrContainEveryCharAr(str,charAr) {
+    let flag=true;
+    charAr.map((char)=>{
+        if(!str.includes(char)){
+            flag=false;
+        }
+    })
+    return flag;
+}
+
+
 
 
 function saveUserDataSync() {

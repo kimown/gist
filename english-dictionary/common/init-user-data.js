@@ -47,6 +47,9 @@ async function initUserData() {
         //已经发送猜出去的字符
         alreadyRequestCharAr:[],
 
+        //经过服务器比对后，已经猜错的字符
+        alreadyConfirmWrongCharAr:[],
+
         //　正在猜第[1,80]个单词
         totalWordCount: 1,
 
