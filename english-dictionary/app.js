@@ -80,7 +80,7 @@ async function startGame() {
  */
 async function GiveMeAWord() {
 
-    let isArriveLimitWords = await checkArriveLimitWords();
+    let isArriveLimitWords = checkArriveLimitWords();
     if (isArriveLimitWords) {
 
         //　查询分数，退出程序．
@@ -209,12 +209,11 @@ function checkNeedNextWord() {
     return flag;
 }
 
-async function checkArriveLimitWords() {
+function checkArriveLimitWords() {
     let {currentGuessWord, numberOfWordsToGuess}=CONFIG;
     let {totalWordCount}=currentGuessWord;
     //如果正在猜的单词数等于一共要猜测的单词数量，GAME OVER,查询分数
     if (totalWordCount > numberOfWordsToGuess) {
-
         return true;
     }
     return false;
@@ -460,8 +459,10 @@ function checkStrContainSomeCharAr(str, charAr) {
 
 
 function saveUserDataSync() {
-
-    writeUserData(JSON.stringify(CONFIG, null, 2));
+    let isArriveLimitWords = checkArriveLimitWords();
+    if (isArriveLimitWords) {
+        writeUserData(JSON.stringify(CONFIG, null, 2));
+    }
 }
 
 
