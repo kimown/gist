@@ -25,8 +25,38 @@ async function initUserData() {
     //预制英文单词字典
     let allWordsArray=await  getAllWords();
 
+    //用户id,必填
+    let sessionId=null;
 
-    let config=Object.assign({},{action},{allWordsArray},{requestUrl},{playerId});
+    //允许猜测的最大次数，默认10次
+    let numberOfGuessAllowedForEachWord=10;
+
+    // 一共要猜测的单词数量，默认80个
+    let numberOfWordsToGuess=80;
+
+
+    let currentGuessWord={
+        word: null,
+
+        //正在猜测第几次
+        currentGuessCount: 1,
+
+        //已经发送猜出去的字符
+        alreadyRequestCharAr:[],
+
+        //　正在猜第[1,80]个单词
+        totalWordCount: 1,
+
+        // 这个单词已经猜错的次数，如果该次数等于　numberOfGuessAllowedForEachWord，则猜测次数已达到上限，直接nextWord
+        wrongGuessCountOfCurrentWord: 0
+    };
+    let config=Object.assign({},
+        {action},
+        {allWordsArray},
+        {requestUrl},{playerId},{sessionId},
+        {numberOfGuessAllowedForEachWord},{numberOfWordsToGuess},
+        {currentGuessWord}
+    );
 
     
     return config;
