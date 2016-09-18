@@ -14,11 +14,12 @@
 ## Installation
 
 ``` bash
+npm install pm2 -g
 cd /tmp
 git clone git@github.com:kimown/gist.git
 cd gist/
 npm i
 cd hangman-game/
-npm run pm2
+node index.js
 ```
 
