@@ -7,6 +7,7 @@
 let configPath = require('./common/config-path');
 let {request, rmFileSync}= require('./../util');
 let logger = require('./../logger');
+let loggerfile = require('./../loggerfile')();
 let scoreLoggerfile = require('./../loggerfile')(configPath.scoreLogFilePath);
 
 let {writeUserData, readUserData}=require('./common');
@@ -158,11 +159,15 @@ async function makeAGuess() {
 
         //如果单词没有全部猜对，递归调用猜词方法;否则直接nextWord
         //如果正在猜测的错误次数超过允许猜测的最大次数,nextWorld
-        if (checkNeedNextWord() || checkWordCotainAsterisks()) {
-            await makeAGuess();
-        } else {
+
+
+        if (!checkWordCotainAsterisks()) {
+            //单词猜测正确
             loggerfile.info(`----------------------------------第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} --------------------------`);
             await wordHasGuessedOperation();
+        } else {
+            //没有猜对这个单词，继续猜测
+            await makeAGuess();
         }
     }
 }
@@ -380,7 +385,7 @@ function getMostOccurenceChar(objCount) {
 function analyseOccurenceOfWordAr(allWordsArrayAfterFilter, alreadyRequestCharAr) {
     let objCount = {};
     allWordsArrayAfterFilter.map((item)=> {
-        item=item.toUpperCase();
+        item = item.toUpperCase();
         let s = new Set();
         for (let i in item) {
             //如果是已经发送的猜测字符，那么下一次不继续发送了
