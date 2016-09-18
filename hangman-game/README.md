@@ -1,4 +1,22 @@
 
+## Usage　（For gist.zip　）
+因为单词词典下载速度很慢，所以zip包里面已经包含好了字典文件
+``` bash
+$ unzip gist.zip
+$ cd gist/
+npm i
+$ cd hangman-game/
+$ node index.js
+
+```
+
+
+
+
+
+
+
+
 
 
 ## Introduction
