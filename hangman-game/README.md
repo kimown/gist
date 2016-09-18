@@ -12,26 +12,11 @@
 
 
 ## Installation
-The project directory structure is 
 
-├── app.js
-├── common
-│   ├── config.json
-│   ├── config-path.js
-│   ├── index.js
-│   ├── init-user-data.js
-│   ├── operate-user-data.js
-│   ├── script_index.js
-│   └── scripts.js
-├── enwiktionary-latest-all-titles-in-ns0-filter.txt
-├── index.js
-├── package.json
-└── README.md
 
 ### First, Download code and 
 
 ``` bash
-npm install pm2 -g
 cd /tmp
 git clone git@github.com:kimown/gist.git
 cd gist/
@@ -45,12 +30,35 @@ gunzip enwiktionary-latest-all-titles-in-ns0.gz
 md5sum enwiktionary-latest-all-titles-in-ns0  // 0efe664228703f2069f2722e74e8abd0
 node common/script_index.js
 ```
-Wait some seconds,You will see a file named 'enwiktionary-latest-all-titles-in-ns0-filter.txt' generated
+
+Wait some seconds,You will see a file named 'enwiktionary-latest-all-titles-in-ns0-filter.txt' generated ,The project directory structure is
+``` bash
+$ tree /tmp/gist/hangman-game/
+├── app.js
+├── common
+│   ├── config.json
+│   ├── config-path.js
+│   ├── index.js
+│   ├── init-user-data.js
+│   ├── operate-user-data.js
+│   ├── script_index.js
+│   └── scripts.js
+├── enwiktionary-latest-all-titles-in-ns0
+├── enwiktionary-latest-all-titles-in-ns0-filter.txt
+├── index.js
+├── package.json
+└── README.md
+
+1 directory, 13 files
+
+```
+
+
 
 ### change the config file
 ``` bash
 cd common/
-vi config
+vi config.json //CHANGE THE CONFIG OF YOUR'S ACCOUNT
 {
   "requestUrl": "http://www.domain-name.com/game/on",
   "playerId": "test@example.com"
@@ -59,7 +67,7 @@ vi config
 ```
 
 ### run the code 
-
+cd /tmp/gist/hangman-game/
 ``` bash
 node index.js
 ```
@@ -67,6 +75,8 @@ node index.js
 If you want run code forever,use
 
 ``` bash
+cd /tmp/gist/hangman-game/
+npm install pm2 -g
 npm run pm2
 ```
 
