@@ -55,7 +55,7 @@ $ tree /tmp/gist/hangman-game/
 
 
 
-### change the config file
+### Change the config file
 ``` bash
 cd common/
 vi config.json //CHANGE THE CONFIG OF YOUR'S
@@ -66,7 +66,7 @@ vi config.json //CHANGE THE CONFIG OF YOUR'S
 
 ```
 
-### run the code
+### Run the code
 
 ``` bash
 cd /tmp/gist/hangman-game/
