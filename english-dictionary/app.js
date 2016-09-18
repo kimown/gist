@@ -135,17 +135,6 @@ async function makeAGuess() {
         initCurrentGuessWordStatus();
         await GiveMeAWord();
     } else {
-        let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
-        let {wrongGuessCountOfCurrentWord, totalWordCount, word, currentGuessCount}=currentGuessWord;
-        logger.info('\n\n');
-        logger.info(`第    ${totalWordCount}    个单词: 第    ${currentGuessCount}    次猜测,单词内容是第    ${word}    ,已经猜错了第    ${wrongGuessCountOfCurrentWord}    次(${numberOfGuessAllowedForEachWord})`);
-
-        if (wrongGuessCountOfCurrentWord >= numberOfGuessAllowedForEachWord) {
-            initCurrentGuessWordStatus();
-            await GiveMeAWord();
-            return;
-        }
-
         let mostPossibleChar = getBestMatchChar();
         if (mostPossibleChar == 'fail') {
             initCurrentGuessWordStatus();
@@ -153,6 +142,7 @@ async function makeAGuess() {
             return;
         }
 
+        //发送最可能的字符　作为请求　
         let res = await sendMostPossibleCharToServer(mostPossibleChar);
 
         //更新状态
@@ -165,7 +155,7 @@ async function makeAGuess() {
 
         if (!checkWordCotainAsterisks()) {
             //单词猜测正确
-            loggerfile.info(`----------------------------------第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} --------------------------`);
+            loggerfile.info(`----------------------------------第${CONFIG.currentGuessWord.totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} --------------------------`);
             await wordHasGuessedOperation();
         } else {
             //如果单词没有全部猜对，递归调用猜词方法
@@ -208,17 +198,19 @@ function checkGuessCorrect(mostPossibleChar) {
 function checkNeedNextWord() {
     let flag = false;
     let {currentGuessWord, numberOfGuessAllowedForEachWord}=CONFIG;
-    let {wrongGuessCountOfCurrentWord, totalWordCount, currentGuessCount}=currentGuessWord;
+    let {wrongGuessCountOfCurrentWord, word, totalWordCount, currentGuessCount}=currentGuessWord;
 
 
     //如果正在猜测的错误次数超过允许猜测的最大次数 或者　超过20次　
-    if (wrongGuessCountOfCurrentWord > numberOfGuessAllowedForEachWord) {
+    if (wrongGuessCountOfCurrentWord >= numberOfGuessAllowedForEachWord) {
         loggerfile.error(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
         flag = true;
     } else if (currentGuessCount > 20) {
         loggerfile.error(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜测次数已经超过 20　 ，开始下一轮.......failing`);
         flag = true;
     }
+    logger.info('\n\n');
+    logger.info(`第    ${totalWordCount}    个单词: 第    ${currentGuessCount}    次猜测,单词内容是第    ${word}    ,已经猜错了第    ${wrongGuessCountOfCurrentWord}    次(${numberOfGuessAllowedForEachWord})`);
     return flag;
 }
 
@@ -315,7 +307,7 @@ function checkWordAllAsterisks() {
 }
 
 /**
- * 针对不同的响应，更新当前的猜词状态
+ * 响应更新当前的猜词状态
  * @param res
  */
 function setCurrentGuessStatus(res) {
