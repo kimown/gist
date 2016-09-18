@@ -86,7 +86,7 @@ exports.writeFileSync = function (path, data) {
  */
 
 exports.request = function (options) {
-    logger.data('request:', options.body);
+    // logger.data('request:', options.body);
     return new Promise((resolve, reject)=> {
         request(options, function (err, res) {
             if (err) {
