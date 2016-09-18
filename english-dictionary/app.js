@@ -147,6 +147,11 @@ async function makeAGuess() {
         }
 
         let mostPossibleChar = getBestMatchChar();
+        if (mostPossibleChar == 'fail') {
+            initCurrentGuessWordStatus();
+            await GiveMeAWord();
+            return;
+        }
 
         let res = await sendMostPossibleCharToServer(mostPossibleChar);
 
@@ -158,16 +163,12 @@ async function makeAGuess() {
             CONFIG.currentGuessWord.alreadyConfirmWrongCharAr.push(mostPossibleChar);
         }
 
-        //如果单词没有全部猜对，递归调用猜词方法;否则直接nextWord
-        //如果正在猜测的错误次数超过允许猜测的最大次数,nextWorld
-
-
         if (!checkWordCotainAsterisks()) {
             //单词猜测正确
             loggerfile.info(`----------------------------------第${totalWordCount}个单词猜测成功，答案是 ${CONFIG.currentGuessWord.word} --------------------------`);
             await wordHasGuessedOperation();
         } else {
-            //没有猜对这个单词，继续猜测
+            //如果单词没有全部猜对，递归调用猜词方法
             await makeAGuess();
         }
     }
@@ -344,6 +345,11 @@ function getBestMatchChar() {
     let allWordsArrayAfterFilter = allWordsArray.filter((v)=> {
         return wordFilterCondition(v, word, alreadyConfirmWrongCharAr)
     });
+
+    //如果过滤后，没有找到对应的单词,放弃这一轮，走猜测下一个单词
+    if (allWordsArrayAfterFilter.length == 0) {
+        return 'fail';
+    }
 
 
     //　统计剩余单词中字符的出现频率
