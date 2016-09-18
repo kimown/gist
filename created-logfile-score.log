@@ -8,3 +8,5 @@
 {"ok":true,"body":{"sessionId":"ee8c8bf4edaba2f2691ccfab9f97bf4a","data":{"totalWordCount":80,"correctWordCount":67,"totalWrongGuessCount":297,"score":1043}},"level":"info","message":"最后得分","timestamp":"2016-09-18T08:00:52.082Z"}
 {"ok":true,"body":{"sessionId":"62f997e3accca7c81dee1c9ea36ef082","data":{"totalWordCount":80,"correctWordCount":72,"totalWrongGuessCount":309,"score":1131}},"level":"info","message":"最后得分","timestamp":"2016-09-18T08:32:20.009Z"}
 {"ok":true,"body":{"sessionId":"2ed28d1d3e0ec67f85ef001d6e40fceb","data":{"totalWordCount":80,"correctWordCount":74,"totalWrongGuessCount":279,"score":1201}},"level":"info","message":"最后得分","timestamp":"2016-09-18T09:09:28.202Z"}
+{"ok":true,"body":{"sessionId":"23b6af0ab1ad9ae67b902c85c94a6987","data":{"totalWordCount":80,"correctWordCount":71,"totalWrongGuessCount":292,"score":1128}},"level":"info","message":"最后得分","timestamp":"2016-09-18T09:47:06.719Z"}
+{"ok":true,"body":{"sessionId":"36243c3274682946686a96392e2e8368","data":{"totalWordCount":80,"correctWordCount":73,"totalWrongGuessCount":258,"score":1202}},"level":"info","message":"最后得分","timestamp":"2016-09-18T09:51:42.299Z"}
