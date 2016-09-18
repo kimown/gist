@@ -1,7 +1,7 @@
 {
-  "name": "english-dictionary",
+  "name": "hangman-game",
   "version": "1.0.0",
-  "description": "``` bash cd /tmp git clone git@github.com:kimown/gist.git cd gist/ npm i cd english-dictionary/ node index.js ```",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "pm2":"pm2 start index.js --name hangman",
