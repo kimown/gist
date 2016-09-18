@@ -111,7 +111,7 @@ function writeUserData(data) {
  * - 清除日志文件
  */
 function initOperation() {
-    removeLogFile();
+    // removeLogFile();
 
 }
 
