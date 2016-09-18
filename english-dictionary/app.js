@@ -138,9 +138,15 @@ async function makeAGuess() {
         logger.info('\n\n');
         logger.info(`第    ${totalWordCount}    个单词: 第    ${currentGuessCount}    次猜测,单词内容是第    ${word}    ,已经猜错了第    ${wrongGuessCountOfCurrentWord}    次(${numberOfGuessAllowedForEachWord})`);
 
+        if (wrongGuessCountOfCurrentWord >= numberOfGuessAllowedForEachWord) {
+            initCurrentGuessWordStatus();
+            await GiveMeAWord();
+            return;
+        }
+
         let mostPossibleChar = getBestMatchChar();
 
-        let res = await sendMostPossibleCharToServer();
+        let res = await sendMostPossibleCharToServer(mostPossibleChar);
 
         //更新状态
         setCurrentGuessStatus(res);
@@ -199,7 +205,7 @@ function checkNeedNextWord() {
 
 
     //如果正在猜测的错误次数超过允许猜测的最大次数 或者　超过20次　
-    if (wrongGuessCountOfCurrentWord == numberOfGuessAllowedForEachWord) {
+    if (wrongGuessCountOfCurrentWord > numberOfGuessAllowedForEachWord) {
         loggerfile.error(`第${totalWordCount}个单词: 第${currentGuessCount}次猜测, 猜错次数已经达到默认上限 ${numberOfGuessAllowedForEachWord} ，开始下一轮.......failing`);
         flag = true;
     } else if (currentGuessCount > 20) {
@@ -374,6 +380,7 @@ function getMostOccurenceChar(objCount) {
 function analyseOccurenceOfWordAr(allWordsArrayAfterFilter, alreadyRequestCharAr) {
     let objCount = {};
     allWordsArrayAfterFilter.map((item)=> {
+        item=item.toUpperCase();
         let s = new Set();
         for (let i in item) {
             //如果是已经发送的猜测字符，那么下一次不继续发送了
