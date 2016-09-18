@@ -1,0 +1,2 @@
+{"ok":true,"body":{"sessionId":"58cc13eb7edbc0c0e3f247cbe50f1a4b","data":{"totalWordCount":80,"correctWordCount":0,"totalWrongGuessCount":800,"score":-800}},"level":"info","message":"最后得分","timestamp":"2016-09-17T19:20:21.870Z"}
+{"ok":true,"body":{"sessionId":"73236453a4f1c398af7984369dfb4862","data":{"totalWordCount":80,"correctWordCount":70,"totalWrongGuessCount":302,"score":1098}},"level":"info","message":"最后得分","timestamp":"2016-09-18T04:03:54.917Z"}
