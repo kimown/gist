@@ -8,7 +8,7 @@ let {path}= require('./../../util');
 
 
 const dictPath=path.join(__dirname,'..','enwiktionary-latest-all-titles-in-ns0-filter.txt');
-const configJsonPath=path.join(__dirname,'..','..','tmp','config.json');
+const configJsonPath=path.join(__dirname,'config.json');
 const userDataPath=path.join(__dirname,'..','data.json');
 const logFilePath=path.join(__dirname,'..','..','created-logfile.log');
 const scoreLogFilePath=path.join(__dirname,'..','..','created-logfile-score.log');
