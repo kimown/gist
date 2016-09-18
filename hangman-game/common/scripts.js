@@ -7,8 +7,8 @@
 
 let {readFile, path, writeFileSync}= require('./../../util');
 
-const dictFilePath = path.join(__dirname, 'enwiktionary-latest-all-titles-in-ns0');
-const dictNewFilePath = path.join(__dirname, 'enwiktionary-latest-all-titles-in-ns0-filter.txt');
+const dictFilePath = path.join(__dirname, '..', 'enwiktionary-latest-all-titles-in-ns0');
+const dictNewFilePath = path.join(__dirname, '..', 'enwiktionary-latest-all-titles-in-ns0-filter.txt');
 
 
 async function main() {

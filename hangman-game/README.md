@@ -12,6 +12,23 @@
 
 
 ## Installation
+The project directory structure is 
+
+├── app.js
+├── common
+│   ├── config.json
+│   ├── config-path.js
+│   ├── index.js
+│   ├── init-user-data.js
+│   ├── operate-user-data.js
+│   ├── script_index.js
+│   └── scripts.js
+├── enwiktionary-latest-all-titles-in-ns0-filter.txt
+├── index.js
+├── package.json
+└── README.md
+
+### First, Download code and 
 
 ``` bash
 npm install pm2 -g
@@ -20,6 +37,37 @@ git clone git@github.com:kimown/gist.git
 cd gist/
 npm i
 cd hangman-game/
+```
+### Then, You need to download a english dictionay
+``` bash
+wget http://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-all-titles-in-ns0.gz
+gunzip enwiktionary-latest-all-titles-in-ns0.gz
+md5sum enwiktionary-latest-all-titles-in-ns0  // 0efe664228703f2069f2722e74e8abd0
+node common/script_index.js
+```
+Wait some seconds,You will see a file named 'enwiktionary-latest-all-titles-in-ns0-filter.txt' generated
+
+### change the config file
+``` bash
+cd common/
+vi config
+{
+  "requestUrl": "http://www.domain-name.com/game/on",
+  "playerId": "test@example.com"
+}
+
+```
+
+### run the code 
+
+``` bash
 node index.js
 ```
+
+If you want run code forever,use
+
+``` bash
+npm run pm2
+```
+
 
