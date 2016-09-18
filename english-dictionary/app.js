@@ -117,6 +117,7 @@ async function sendRequireNextWordRequest() {
 }
 async function operationBeforeExit() {
     await GetYourResult();
+    initCurrentGuessWordStatus();
     processExit();
 }
 
