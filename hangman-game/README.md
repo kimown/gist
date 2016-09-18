@@ -4,7 +4,7 @@
 ``` bash
 $ unzip gist.zip
 $ cd gist/
-npm i
+$ npm i --registry=https://registry.npm.taobao.org
 $ cd hangman-game/
 $ node index.js
 
@@ -44,8 +44,11 @@ cd hangman-game/
 ### Then, You need to download a english dictionay
 ``` bash
 wget http://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-all-titles-in-ns0.gz
+
+// check the md5 of the downloded filehttps://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-md5sums.txt
+md5sum enwiktionary-latest-all-titles-in-ns0.gz
+
 gunzip enwiktionary-latest-all-titles-in-ns0.gz
-md5sum enwiktionary-latest-all-titles-in-ns0  // 0efe664228703f2069f2722e74e8abd0
 node common/script_index.js
 ```
 
