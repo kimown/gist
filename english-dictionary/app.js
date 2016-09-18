@@ -473,6 +473,7 @@ function checkStrContainSomeCharAr(str, charAr) {
 function saveUserDataSync() {
     let isArriveLimitWords = checkArriveLimitWords();
     if (isArriveLimitWords) {
+        CONFIG.allWordsArray = null;
         writeUserData(JSON.stringify(CONFIG, null, 2));
     }
 }

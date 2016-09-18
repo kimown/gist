@@ -110,6 +110,8 @@ exports.request = function (options) {
  */
 exports.os = os;
 
+exports.fs=fs;
+
 exports.path=path;
 
 exports.rmFileSync = function (absolutePath) {
