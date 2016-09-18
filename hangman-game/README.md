@@ -47,7 +47,7 @@ cd hangman-game/
 ``` bash
 wget http://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-all-titles-in-ns0.gz
 
-// check the md5 of the downloded filehttps://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-md5sums.txt
+// check the md5 of the downloded file　https://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-md5sums.txt
 md5sum enwiktionary-latest-all-titles-in-ns0.gz
 
 gunzip enwiktionary-latest-all-titles-in-ns0.gz
@@ -93,7 +93,6 @@ vi config.json //CHANGE THE CONFIG OF YOUR'S
 
 ``` bash
 cd /tmp/gist/hangman-game/
-``` bash
 node index.js
 ```
 
