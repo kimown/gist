@@ -1,5 +1,5 @@
 
-## Usage　（For gist.zip　）
+## Usage　（For gist.zip）
 因为单词词典下载速度很慢，所以zip包里面已经包含好了字典文件
 ``` bash
 $ unzip gist.zip
@@ -26,7 +26,7 @@ $ node index.js
 然后重新统计单词字典中字符的频率
 - 如果发送次数大于20次，下一个单词；如果错误次数超过限定值，下一个单词
 
-For More,[Click Here](https://kimown.github.io/2016/09/18/hangman%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF/)
+For More, [Click Here](https://kimown.github.io/2016/09/18/Hangman%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF/)
 
 
 
