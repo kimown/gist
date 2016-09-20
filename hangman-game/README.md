@@ -43,7 +43,7 @@ cd gist/
 npm i
 cd hangman-game/
 ```
-### Then, You need to download a english dictionay
+### Then, You need to download an english dictionay
 ``` bash
 wget http://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-all-titles-in-ns0.gz
 

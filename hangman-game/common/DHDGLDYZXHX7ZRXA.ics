@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+PRODID:-//Calendly//EN
+BEGIN:VEVENT
+DESCRIPTION:Event Name: Strikingly Tech Round Interview\nEvent Description:
+  Welcome to our tech online interview. This is Joyce from Strikingly and we
+ 'll have around 1hr interview with you to know more about you. Talk to you 
+ soon! \nDate & Time: 10:00am - 11:00am (GMT+08:00 China\, Singapore\, Perth
+ ) on Wednesday\, September 21\, 2016\nLocation: Skype/Onsite\n\nCancel this
+  event:\nhttps://calendly.com/cancellations/DHDGLDYZXHX7ZRXA\nReschedule th
+ is event:\nhttps://calendly.com/reschedulings/DHDGLDYZXHX7ZRXA\n
+DTEND:20160921T030000Z
+DTSTAMP:20160920T133956
+DTSTART:20160921T020000Z
+CLASS:PRIVATE
+SEQUENCE:0
+SUMMARY:Strikingly Tech Round Interview with Strikingly
+TRANSP:OPAQUE
+UID:calendly-5213160
+END:VEVENT
+END:VCALENDAR
