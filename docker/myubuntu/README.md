@@ -12,3 +12,5 @@ https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 
 https://cr.console.aliyun.com/#/imageList
 
+http://stackoverflow.com/questions/31216780/how-to-source-etc-profile-and-save-it-in-docker
+

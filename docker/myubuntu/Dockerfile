@@ -44,7 +44,7 @@ RUN mkdir -p /home/mdk
 RUN wget http://mirrors.linuxeye.com/jdk/jdk-8u92-linux-x64.tar.gz -P /home/mdk
 RUN tar -xzvf /home/mdk/jdk-8u92-linux-x64.tar.gz -C /home/mdk
 RUN echo -e "export JAVA_HOME=/home/mdk/jdk1.8.0_92\nexport PATH=\$JAVA_HOME/bin:\$PATH\nexport CLASSPATH=.:\$JAVA_HOME/lib">>/etc/profile
-RUN source /etc/profile
+RUN ln -s /home/mdk/jdk1.8.0_92/bin/java /usr/bin/java
 
 RUN echo -e "\n\n">>/etc/profile
 
@@ -54,7 +54,7 @@ RUN mkdir -p /home/mdk
 RUN wget http://mirrors.aliyun.com/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz -P /home/mdk
 RUN tar -xzvf /home/mdk/apache-maven-3.3.9-bin.tar.gz -C /home/mdk
 RUN echo -e "export M2_HOME=/home/mdk/apache-maven-3.3.9\nexport PATH=\$M2_HOME/bin:\$PATH">>/etc/profile
-RUN source /etc/profile
+RUN ln -s /home/mdk/apache-maven-3.3.9/bin/mvn /usr/bin/mvn
 
 # TODO  gradle
 
