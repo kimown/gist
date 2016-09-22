@@ -18,10 +18,13 @@ npm install npm -g --registry=https://registry.npm.taobao.org
 
 
 
+
 #wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"  "http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.tar.gz"
+
 cd /home
 mkdir mdk
 cd mdk
+# thank you ．．　https://bbs.aliyun.com/read/255213.html?pos=9
 wget http://mirrors.linuxeye.com/jdk/jdk-8u92-linux-x64.tar.gz
 tar -xzvf jdk-8u92-linux-x64.tar.gz
 echo -e "export JAVA_HOME=/home/mdk/jdk1.8.0_92\nexport PATH=\$JAVA_HOME/bin:\$PATH\nexport CLASSPATH=.:\$JAVA_HOME/lib">>/etc/profile
@@ -29,8 +32,19 @@ source /etc/profile
 java -version
 javac 1.8.0_92
 
+echo -e "\n\n">>/etc/profile
 
 # maven
+cd /home/mdk
+wget http://mirrors.aliyun.com/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+tar -xzvf apache-maven-3.3.9-bin.tar.gz
+echo -e "export M2_HOME=/home/mdk/apache-maven-3.3.9\nexport PATH=\$M2_HOME/bin:\$PATH">>/etc/profile
+
+echo -e "\n\n">>/etc/profile
+
+# TODO
+
+
 
 
 
