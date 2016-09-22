@@ -64,6 +64,10 @@ RUN ln -s $M2_HOME/bin/mvn /usr/bin/mvn
 
 # TODO  gradle
 
+RUN echo 'alias hi="echo hello"' >> ~/.bashrc
+RUN echo 'alias c="clear"' >> ~/.bashrc
+
+
 
 
 
