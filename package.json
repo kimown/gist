@@ -25,6 +25,7 @@
     "babel-register": "^6.14.0"
   },
   "dependencies": {
+    "moment": "2.13.0",
     "request": "^2.74.0",
     "winston": "^2.2.0"
   }
