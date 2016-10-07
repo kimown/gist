@@ -9,17 +9,17 @@
     /*background-color:black;*/
 /*}*/
 
-body{
-    color:red;
-}
-h1{
-    height: 700px;
-}
-h2{
-    height: 700px;
-    padding:10px;
-    border:100px;
-}
+/*body{*/
+    /*color:red;*/
+/*}*/
+/*h1{*/
+    /*height: 700px;*/
+/*}*/
+/*h2{*/
+    /*height: 700px;*/
+    /*padding:10px;*/
+    /*border:100px;*/
+/*}*/
 
 .bottom-bar-pannel{
     position: fixed;
@@ -30,8 +30,7 @@ h2{
     text-align: center;
     /*box-shadow: 10px 10px 5px #888888;*/
 }
-.bottom-bar-pannel span{
-
+.bottom-bar-pannel a {
+    color: #35afda;
 }
-
 
