@@ -16,9 +16,9 @@
   </head>
   <body>
   <h1 style="height: 100px">我是h1</h1>
-  <h2 style="height: 700px">我是h2</h2>
-  <div class="browser-error-dialog s-edit-modal" style="display: block; position: absolute; background-color: rgb(231, 233, 235); width: 70%; left: 15%;
-   bottom: 30px; text-align: center;"><p style="padding: 30px; font-size: 140%;"><strong>.<a href="/learnstrikingly" target="_blank">Learn More.</a></strong></p></div>
+  <h2 style="height: 800px">我是h2</h2>
+  <div class="browser-error-dialog s-edit-modal" style="display: block; position: fixed ; top: auto;overflow: hidden;background-color: rgb(231, 233, 235); width: 70%; left: 15%;
+   bottom: 30px; text-align: center;height: 85px;"><p style="padding: 30px; font-size: 140%;"><strong>.<a href="/learnstrikingly" target="_blank">Learn More.</a></strong></p></div>
 
     <!--
       This HTML file is a template.
@@ -49,16 +49,28 @@
 
   var browser_error_dialog_bottom=parseInt($('.browser-error-dialog').css('bottom'));
   var scrollTop,timer;
+  document.title=('--'+$(window).scrollTop()+"--"+$(document).height());
+
+  var flag=false;
   $(window).scroll(function () {
+//      if(flag){
+//          return;
+//      }
+      document.title=('--'+$(window).scrollTop()+"--"+$(document).height());
     window.clearTimeout(timer);
 
     //
     timer=window.setTimeout(function () {
-      scrollTop=getScrollTop();
+        flag=true;
+      scrollTop=$(window).scrollTop();
       // $('.browser-error-dialog').css('bottom',browser_error_dialog_bottom-scrollTop);
       //http://stackoverflow.com/questions/2986353/jquery-animate-bottom-problem
-      $('.browser-error-dialog')
-              .animate({bottom:browser_error_dialog_bottom-scrollTop},'slow');
+      $('.browser-error-dialog').stop()
+              .animate({bottom:browser_error_dialog_bottom-scrollTop},'slow',function () {
+                  document.title=('--'+$(window).scrollTop()+"--"+$(document).height());
+              });
+        window.clearTimeout(timer);
+
     },150);
   });
 
