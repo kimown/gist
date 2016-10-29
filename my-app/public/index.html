@@ -28,65 +28,10 @@
     </style>
   </head>
   <body>
-  <h1 style="height: 100px">我是h1</h1>
-  <h2 style="height: 800px">我是h2</h2>
-  <div class="browser-error-dialog s-edit-modal" style="display: block; position: fixed ; top: auto;overflow: hidden;background-color: rgb(231, 233, 235); width: 70%; left: 15%;
-   bottom: 30px; text-align: center;height: 85px;"><p style="padding: 30px; font-size: 140%;"><strong>.<a href="/learnstrikingly" target="_blank">Learn More.</a></strong></p></div>
-
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start`.
-      To create a production bundle, use `npm run build`.
-    -->
+  <h1>i am h1</h1>
+  <h2>I am h2</h2>
   </body>
-<script>
-
-  function getScrollTop() {
-    var scrollTop=0;
-    if(document.documentElement&&document.documentElement.scrollTop){
-      // Fix: for xp ie6 only
-      scrollTop=document.documentElement.scrollTop;
-    }else if(document.body){
-      scrollTop=document.body.scrollTop;
-    }
-    return scrollTop;
-  }
-
-
-  $('.browser-error-dialog').css('position','absolute');
-
-  var browser_error_dialog_bottom=parseInt($('.browser-error-dialog').css('bottom'));
-  var scrollTop,timer;
-  document.title=('--'+$(window).scrollTop()+"--"+$(document).height());
-
-  var flag=false;
-  $(window).scroll(function () {
-//      if(flag){
-//          return;
-//      }
-      document.title=('--'+$(window).scrollTop()+"--"+$(document).height());
-    window.clearTimeout(timer);
-
-    //
-    timer=window.setTimeout(function () {
-        flag=true;
-      scrollTop=$(window).scrollTop();
-      // $('.browser-error-dialog').css('bottom',browser_error_dialog_bottom-scrollTop);
-      //http://stackoverflow.com/questions/2986353/jquery-animate-bottom-problem
-      $('.browser-error-dialog').stop()
-              .animate({bottom:browser_error_dialog_bottom-scrollTop},'slow',function () {
-                  document.title=('--'+$(window).scrollTop()+"--"+$(document).height());
-              });
-        window.clearTimeout(timer);
-
-    },150);
-  });
-
+<script>s
 
 </script>
 </html>

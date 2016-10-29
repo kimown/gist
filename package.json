@@ -27,6 +27,7 @@
   "dependencies": {
     "moment": "2.13.0",
     "request": "^2.74.0",
+    "webpack-dev-server": "^1.16.2",
     "winston": "^2.2.0"
   }
 }
