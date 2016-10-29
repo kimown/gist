@@ -12,7 +12,7 @@ let WebpackDevServer = require('webpack-dev-server');
 
 
 var config = require("./webpack.config.js");
-config.entry.app.unshift("webpack-dev-server/client?http://localhost:8080/");
+config.entry.app.unshift("webpack-dev-server/client?http://localhost:8080/", "webpack/hot/dev-server");
 var compiler = webpack(config);
 var server = new WebpackDevServer(compiler, {
 
@@ -20,7 +20,12 @@ var server = new WebpackDevServer(compiler, {
     contentBase:path.join(__dirname,'build'),
 
     // NodeJS API: server js from this path
-    publicPath: "/assets/"
+    publicPath: "/assets/",
+
+
+
+
+    hot: true
 
 
 });

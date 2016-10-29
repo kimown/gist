@@ -1,5 +1,7 @@
-document.write("iiii");
+// if (module.hot) {
+//     module.hot.accept();
+// }
 
 
 
-var a = 1;
+require('./test');

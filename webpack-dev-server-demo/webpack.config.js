@@ -1,4 +1,7 @@
 var path = require("path");
+var webpack = require('webpack');
+
+
 
 console.log(path.resolve(__dirname, "build"));
 module.exports = {
@@ -9,5 +12,9 @@ module.exports = {
     path: path.resolve(__dirname, "build"),
     publicPath: "/assets/",
     filename: "bundle.js"
-  }
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ]
 };
