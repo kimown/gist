@@ -77,7 +77,10 @@
         <div class="swiper-slide">Slide 10</div>
     </div>
     <!-- Add Pagination -->
-    <div class="swiper-pagination"></div>
+
+    <div class="swiper-pagination center slide-selectors">
+
+    </div>
 </div>
 
 <!-- Swiper JS -->
@@ -89,7 +92,7 @@
         pagination: '.swiper-pagination',
         paginationClickable: true,
         paginationBulletRender: function (index, className) {
-            return '<span class="' + className + '">' + (index + 1) + '</span>';
+            return '<span class="test ' + className + '">' + (index + 1) + '</span>';
         }
     });
 </script>
