@@ -5,6 +5,9 @@ import mod from "react-swipeable-views/lib/utils/mod";
 
 const EnhancedSwipeableViews = virtualize(SwipeableViews);
 
+const CONFIG = {
+    loop: true
+}
 
 class App extends Component {
 
@@ -22,7 +25,7 @@ class App extends Component {
     slideRenderer = (params, children)=> {
         let childrenLength = children.length;
         const {index, key} = params;
-        if(mod(index, childrenLength) < childrenLength){
+        if (mod(index, childrenLength) < childrenLength) {
             return this.dealChild(children[mod(index, childrenLength)], key)
         }
         return null
@@ -57,15 +60,17 @@ class App extends Component {
 
 
     startInterval(interval = 2000) {
+        if (CONFIG.loop != true) {
+            return
+        }
         clearInterval(this.timer);
         this.timer = setInterval(this.handleInterval, interval);
     }
 
     handleInterval = () => {
         const indexLatest = this.state.index;
-        let indexNew = indexLatest;
-        indexNew += 1;
-        indexNew = mod(indexNew, 3);
+        //Todo use props.children.length
+        let indexNew = mod((indexLatest + 1), 3);
         console.info('setTimer:indexNew' + indexNew)
         this.setState({
             index: indexNew,
@@ -85,10 +90,6 @@ class App extends Component {
         this.setState({
             index: stateIndex
         })
-    }
-
-    onSwitching = (index, type)=> {
-        console.error('index' + index + "===" + type)
     }
 
     handleSwitching = (index, type) => {
