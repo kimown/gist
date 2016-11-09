@@ -11,7 +11,7 @@ import mod from "react-swipeable-views/lib/utils/mod";
 const EnhancedSwipeableViews = virtualize(SwipeableViews);
 
 
-class App extends Component {
+class CustomAutoPlay extends Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +21,7 @@ class App extends Component {
     static defaultProps = {
         autoplay: true,
         index: 0,
-        interval: 3000,
+        interval: 1000,
     };
 
     componentWillUnmount() {
@@ -78,9 +78,9 @@ class App extends Component {
     onChangeIndex = (index, indexLatest)=> {
         let stateIndex = this.state.index;
         if ((index - indexLatest) > 0) {
-            stateIndex = (stateIndex + 1);
+            stateIndex += 1;
         } else if ((index - indexLatest) < 0) {
-            stateIndex = (stateIndex - 1);
+            stateIndex -= 1;
         }
         this.setState({
             index: stateIndex
@@ -100,7 +100,6 @@ class App extends Component {
 
     render() {
         let {index}=this.state;
-        let {children, autoplay, interval}=this.props;
         return (
             <EnhancedSwipeableViews
                 index={index}
@@ -112,4 +111,4 @@ class App extends Component {
 }
 
 
-export default Autoplay;
+export default CustomAutoPlay;
