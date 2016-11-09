@@ -17,7 +17,6 @@ class CustomAutoPlay extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {index: 0};
     }
 
     static defaultProps = {
@@ -27,6 +26,7 @@ class CustomAutoPlay extends Component {
     };
 
     shouldComponentUpdate(nextProps, nextState) {
+        console.log('begin compare');
         return shallowCompare(this, nextProps, nextState);
     }
 
@@ -72,7 +72,7 @@ class CustomAutoPlay extends Component {
     }
 
     handleInterval = () => {
-        let indexLatest = this.state.index;
+        let indexLatest = this.props.index;
         let {children}=this.props;
         let indexNew = mod((indexLatest + 1), children.length);
         this.changeIndex(indexNew)
@@ -80,7 +80,7 @@ class CustomAutoPlay extends Component {
 
 
     onChangeIndex = (index, indexLatest)=> {
-        let stateIndex = this.state.index;
+        let stateIndex = this.props.index;
         if ((index - indexLatest) > 0) {
             stateIndex += 1;
         } else if ((index - indexLatest) < 0) {
@@ -102,10 +102,7 @@ class CustomAutoPlay extends Component {
     changeIndex = (index)=> {
         let {children}=this.props;
         let childrenLength = children.length;
-        index = mod(index, childrenLength)
-        this.setState({
-            index: index
-        })
+        index = mod(index, childrenLength);
         let {changeIndexCallBack}=this.props;
         changeIndexCallBack && changeIndexCallBack(index)
 
@@ -113,7 +110,7 @@ class CustomAutoPlay extends Component {
 
 
     render() {
-        let {index}=this.state;
+        let {index}=this.props;
         return (
             <EnhancedSwipeableViews
                 index={index}
