@@ -8,6 +8,8 @@ import SwipeableViews from "react-swipeable-views";
 import virtualize from "react-swipeable-views/lib/virtualize";
 import mod from "react-swipeable-views/lib/utils/mod";
 
+import shallowCompare from 'react-addons-shallow-compare'
+
 const EnhancedSwipeableViews = virtualize(SwipeableViews);
 
 
@@ -23,6 +25,10 @@ class CustomAutoPlay extends Component {
         index: 0,
         interval: 1000,
     };
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+    }
 
     componentWillUnmount() {
         clearInterval(this.timer);
