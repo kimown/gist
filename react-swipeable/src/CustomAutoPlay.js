@@ -94,8 +94,14 @@ class CustomAutoPlay extends Component {
         } else if (type === 'end') {
             this.startInterval();
         }
-
     };
+
+
+    changeIndex=(index)=>{
+        this.setState({
+            index: index
+        })
+    }
 
 
     render() {

@@ -18,11 +18,21 @@ class App extends Component {
             </div>,
         ];
 
-        return <CustomAutoPlay
-            children={children}
-            autoplay={true}
-            interval={3500}
-        />;
+        return(
+            <div>
+                <CustomAutoPlay
+                    ref="customautoplay"
+                    children={children}
+                    autoplay={true}
+                    interval={3500}
+                />
+                <div className="button" onClick={this._click}>Click Me</div>
+            </div>
+        );
+    }
+
+    _click=()=>{
+        this.refs.customautoplay.changeIndex(2)
     }
 }
 
