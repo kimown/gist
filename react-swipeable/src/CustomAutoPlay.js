@@ -69,9 +69,7 @@ class CustomAutoPlay extends Component {
         let indexLatest = this.state.index;
         let {children}=this.props;
         let indexNew = mod((indexLatest + 1), children.length);
-        this.setState({
-            index: indexNew,
-        });
+        this.changeIndex(indexNew)
     };
 
 
@@ -82,9 +80,7 @@ class CustomAutoPlay extends Component {
         } else if ((index - indexLatest) < 0) {
             stateIndex -= 1;
         }
-        this.setState({
-            index: stateIndex
-        })
+        this.changeIndex(stateIndex)
     }
 
     handleSwitching = (index, type) => {
@@ -97,10 +93,16 @@ class CustomAutoPlay extends Component {
     };
 
 
-    changeIndex=(index)=>{
+    changeIndex = (index)=> {
+        let {children}=this.props;
+        let childrenLength = children.length;
+        index = mod(index, childrenLength)
         this.setState({
             index: index
         })
+        let {changeIndexCallBack}=this.props;
+        changeIndexCallBack && changeIndexCallBack(index)
+
     }
 
 

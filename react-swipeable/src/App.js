@@ -21,10 +21,13 @@ class App extends Component {
         return(
             <div>
                 <CustomAutoPlay
-                    ref="customautoplay"
+                    ref="customAutoplay"
                     children={children}
-                    autoplay={true}
+                    autoplay={false}
                     interval={3500}
+                    changeIndexCallBack={(index)=>{
+                        console.debug(index);
+                    }}
                 />
                 <div className="button" onClick={this._click}>Click Me</div>
             </div>
@@ -32,7 +35,7 @@ class App extends Component {
     }
 
     _click=()=>{
-        this.refs.customautoplay.changeIndex(2)
+        this.refs.customAutoplay.changeIndex(2)
     }
 }
 
