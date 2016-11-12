@@ -3,4 +3,10 @@
  */
 
 
-console.log('load index.js');
+
+
+$( ".button1" ).click(function() {
+
+    $('.transition').height(200)
+
+});
