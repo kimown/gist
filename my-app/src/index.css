@@ -1,7 +1,21 @@
+body{
+    background-color: cadetblue;
+}
 
 
 h1{
-    color:red;
-    background: grey;
+    color:white;
+    text-align: center;
+}
+
+p{
+    font-size: 20px;
+    color: red;
+    text-align: center;
+}
+
+
+p.center{
+    color: black;
     text-align: center;
 }

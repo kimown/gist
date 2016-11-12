@@ -23,7 +23,12 @@
     "babel-polyfill": "^6.13.0",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
-    "babel-register": "^6.14.0"
+    "babel-register": "^6.14.0",
+    "eslint": "^3.10.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.6.0"
   },
   "dependencies": {
     "moment": "2.13.0",

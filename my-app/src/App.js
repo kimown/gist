@@ -1,6 +1,26 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import test from './test'
+
+test()
+
+const original = { a: 1, b: 2 }
+const copy = { ...original, c: 33 }
+console.log(copy)
+
+class Queue {
+    constructor(contents = []) {
+        this.queue = [...contents]
+    }
+}
+const a = new Queue([1, 22, 333])
+window.a = a
+
+class PeekableQueue extends Queue {
+
+}
+
 
 class App extends Component {
   render() {
