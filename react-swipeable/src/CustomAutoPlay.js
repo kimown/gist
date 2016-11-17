@@ -102,7 +102,6 @@ class CustomAutoPlay extends Component {
     changeIndex = (index)=> {
         let {children}=this.props;
         let childrenLength = children.length;
-        index = mod(index, childrenLength);
         let {changeIndexCallBack}=this.props;
         changeIndexCallBack && changeIndexCallBack(index)
 

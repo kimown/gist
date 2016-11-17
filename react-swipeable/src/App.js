@@ -12,16 +12,16 @@ class App extends Component {
 
     static defaultProps = {
         children: [
-            <div id="test">
+            <div className="slide slide0">
                 {'slide n°0'}
             </div>,
-            <div id="test">
+            <div className="slide slide1">
                 {'slide n°1'}
             </div>,
-            <div id="test">
+            <div className="slide slide2">
                 {'slide n°2'}
             </div>,
-            <div id="test">
+            <div className="slide slide3">
                 {'slide n°3'}
             </div>,
         ]
@@ -59,7 +59,7 @@ class App extends Component {
         let {children} = this.props;
         let childrenLength = children.length;
 
-        let index = mod(this.state.index + number, childrenLength)
+        let index = this.state.index + number
         this.setState({
             index: index
         })
