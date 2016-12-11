@@ -51,3 +51,9 @@ body {
 #root {
   text-align: center;
 }
+
+
+.slide {
+  width: 400px;
+  height: 400px;
+}

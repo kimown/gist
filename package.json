@@ -33,8 +33,11 @@
   "dependencies": {
     "moment": "2.13.0",
     "react": "^15.3.2",
+    "react-dnd": "^2.1.4",
+    "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-slick": "git://github.com/strikingly/react-slick.git#ed826e343821f65c281ca2c9e40e127f59c74ce4",
     "request": "^2.74.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",

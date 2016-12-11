@@ -30,6 +30,7 @@ class SimpleSlider extends Component {
     }
 
     _getChildren = () =>{
+        console.info('====')
         var settings = {
             dots: true,
             infinite: true,
@@ -37,7 +38,7 @@ class SimpleSlider extends Component {
             draggable: false,
             initialSlide:0,
             slidesToShow: 1,
-            autoplay: false,
+            autoplay: true,
             autoplaySpeed: 2000,
             slidesToScroll: 1,
             beforeChange: function (currentSlide, nextSlide) {
@@ -47,10 +48,11 @@ class SimpleSlider extends Component {
                 console.info('after change', currentSlide,aa,bb);
             },
         };
-        const child = [<div data-test="test"><h3>11111</h3></div>,<div><h3>2</h3></div>,<div><h3>3</h3></div>,
-            <div><h3>4</h3></div>,
-            <div><h3>5</h3></div>,
-            <div><h3>6</h3></div>]
+        const child = [
+            <div className="slide"><img src='https://images.unsplash.com/photo-1415025148099-17fe74102b28?h=1500&w=2000&q=90&fit=clip&fm=jpg' /></div>,
+            <div className="slide"><img src='http://uploads.strikinglycdn.com/static/backgrounds/things/121.jpg' /></div>,
+            <div className="slide"><img src='https://images.unsplash.com/photo-1415025148099-17fe74102b28' /></div>,
+        ]
         return (<Slick ref='reactslick'  {...settings}>
             {child}
 

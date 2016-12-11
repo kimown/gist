@@ -9,7 +9,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-motion": "^0.4.5",
-    "react-slick": "^0.14.5",
+    "react-slick": "git://github.com/strikingly/react-slick.git#c908f662c3e7c52c0ec1cbf1581716c7e95461a2",
     "react-swipeable-views": "^0.7.11"
   },
   "scripts": {
