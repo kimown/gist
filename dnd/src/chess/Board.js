@@ -7,6 +7,10 @@ import React, { Component, PropTypes } from 'react';
 import Square from './Square';
 import Knight from './Knight';
 import { moveKnight } from '../Game';
+import { DragDropContext } from 'react-dnd';
+
+import HTML5Backend from 'react-dnd-html5-backend';
+
 
 
 export default class Board extends Component {
@@ -57,6 +61,7 @@ export default class Board extends Component {
     handleSquareClick(toX, toY) {
         moveKnight(toX, toY);
     }
-
-
 }
+
+export default DragDropContext(HTML5Backend)(Board);
+
