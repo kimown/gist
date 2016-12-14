@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {render} from 'react-dom';
-
-
 import Sortable from 'sortablejs';
+import SortableMixin from 'react-mixin-sortablejs'
 
-class SortableComponent extends React.Component {
+
+class SortableExampleEsnext extends React.Component {
 
     sortableContainersDecorator = (componentBackingInstance) => {
-        console.info('======sortableContainersDecorator')
         // check if backing instance not null
         if (componentBackingInstance) {
             let options = {
@@ -20,39 +19,64 @@ class SortableComponent extends React.Component {
     };
 
     sortableGroupDecorator = (componentBackingInstance) => {
-        console.info('-----sortableGroupDecorator')
         // check if backing instance not null
         if (componentBackingInstance) {
             let options = {
                 draggable: "div", // Specifies which items inside the element should be sortable
-                group: "shared"
+                group: "shared",
+                onStart: (evt)=>{
+                   this.onStart()
+                }
             };
             Sortable.create(componentBackingInstance, options);
         }
     };
-    handleSort = ()=>{
-        alert(11)
+
+    constructor(props: PropsType) {
+        super(props)
+        this.state = {
+            data: ['Swap them around00000','Swap us around111111','Swap things around2222222222','Swap everything around3333333333']
+        }
+    }
+
+    onStart = ()=>{
+        console.log('onStartonStartonStart')
+    }
+
+    componentDidMount() {
+        console.info('---componentDidMount')
+        window.setTimeout(()=>{
+            const {data} = this.state
+            const newData = [...data]
+            newData.push('Swap them around444444','Swap them around555555')
+            console.info('ADD ELE')
+            this.setState({
+                data: newData
+            })
+        },2000)
+
+        window.setTimeout(()=>{
+            const {data} = this.state
+            const newData = [...data]
+            newData.splice(0,1)
+            console.info('DELETE ELE')
+            this.setState({
+                data: newData
+            })
+        },4000)
     }
 
     render() {
+        const data = this.state.data
+        const divS = data.map((v)=>{
+            return <div>{v}</div>
+        })
         return (
-            <div className="container">
+            <div className="container" ref={this.sortableContainersDecorator}>
                 <div className="group">
                     <h2 className="group-title">Group 1</h2>
                     <div className="group-list" ref={this.sortableGroupDecorator}>
-                        <div>Swap them around000000000</div>
-                        <div>Swap us around1111111111</div>
-                        <div>Swap things around22222222222</div>
-                        <div>Swap everything around3333333333</div>
-                    </div>
-                </div>
-                <div className="group">
-                    <h2 className="group-title">Group 2</h2>
-                    <div className="group-list" ref={this.sortableGroupDecorator}>
-                        <div>Swap them around0000000000</div>
-                        <div>Swap us around111111111</div>
-                        <div>Swap things around2222222222</div>
-                        <div>Swap everything around33333333333</div>
+                        {divS}
                     </div>
                 </div>
             </div>
@@ -60,4 +84,4 @@ class SortableComponent extends React.Component {
     }
 }
 
-export default SortableComponent;
+export default SortableExampleEsnext;
