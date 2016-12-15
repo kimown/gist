@@ -22,12 +22,12 @@ class SortableExampleEsnext extends React.Component {
         // check if backing instance not null
         if (componentBackingInstance) {
             let options = {
-                // draggable: "div", // Specifies which items inside the element should be sortable
+                draggable: "div", // Specifies which items inside the element should be sortable
                 // group: "shared",
                 // onStart: (evt)=>{
                 //    this.onStart()
                 // }
-                handle: '.draging',
+                handle: '.my-handle',
             };
             Sortable.create(componentBackingInstance, options);
         }
@@ -70,19 +70,30 @@ class SortableExampleEsnext extends React.Component {
     render() {
         const data = this.state.data
         const divS = data.map((v)=>{
-            return <div className="draging">
-                        <div className="draghandle">{'DRAG ME'}</div>
+            return <div>
+                        <span className="my-handle">{'DRAG ME'}</span>
                         {v}
                     {',,,,,,'}
                     </div>
         })
+
+        const lis = data.map((v)=>{
+            return <li>
+                <span className="my-handle">{'DRAG ME'}</span>
+                {v}
+                {',,,,,,'}
+            </li>
+        })
+
         return (
             <div className="container">
                 <div className="group">
                     <h2 className="group-title">Group 1</h2>
-                    <div className="group-list" ref={this.sortableGroupDecorator}>
-                        {divS}
-                    </div>
+                        <ul id="listWithHandle" ref={this.sortableGroupDecorator}>
+                            {divS}
+                            {/*<li><span className="my-handle">::</span> list item text one</li>*/}
+                            {/*<li><span className="my-handle">::</span> list item text two</li>*/}
+                        </ul>
                 </div>
             </div>
         );
