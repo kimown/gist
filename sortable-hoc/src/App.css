@@ -50,3 +50,13 @@ ul {
   cursor: move;
   cursor: -webkit-grabbing;
 }
+
+
+.sortableItem {
+  padding: 10px;
+}
+
+.addme{
+  text-align: center;
+  padding: 20px;
+}
