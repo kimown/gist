@@ -69,7 +69,7 @@ class SortableExampleEsnext extends React.Component {
     render() {
         const data = this.state.data
         const divS = data.map((v)=>{
-            return <div>{v}</div>
+            return <div className="draging">{v}{',,,,,,'}</div>
         })
         return (
             <div className="container" ref={this.sortableContainersDecorator}>

@@ -22,3 +22,22 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+.draging {
+  width: 300px;
+  display: inline;
+}
+
+.draghandle {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.my-handle {
+  width: 25px;
+  height: 25px;
+  cursor: move;
+  cursor: -webkit-grabbing;
+}
