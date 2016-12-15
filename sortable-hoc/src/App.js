@@ -22,11 +22,12 @@ class SortableExampleEsnext extends React.Component {
         // check if backing instance not null
         if (componentBackingInstance) {
             let options = {
-                draggable: "div", // Specifies which items inside the element should be sortable
-                group: "shared",
-                onStart: (evt)=>{
-                   this.onStart()
-                }
+                // draggable: "div", // Specifies which items inside the element should be sortable
+                // group: "shared",
+                // onStart: (evt)=>{
+                //    this.onStart()
+                // }
+                handle: '.my-handle',
             };
             Sortable.create(componentBackingInstance, options);
         }
@@ -44,26 +45,26 @@ class SortableExampleEsnext extends React.Component {
     }
 
     componentDidMount() {
-        console.info('---componentDidMount')
-        window.setTimeout(()=>{
-            const {data} = this.state
-            const newData = [...data]
-            newData.push('Swap them around444444','Swap them around555555')
-            console.info('ADD ELE')
-            this.setState({
-                data: newData
-            })
-        },2000)
-
-        window.setTimeout(()=>{
-            const {data} = this.state
-            const newData = [...data]
-            newData.splice(0,1)
-            console.info('DELETE ELE')
-            this.setState({
-                data: newData
-            })
-        },4000)
+        // console.info('---componentDidMount')
+        // window.setTimeout(()=>{
+        //     const {data} = this.state
+        //     const newData = [...data]
+        //     newData.push('Swap them around444444','Swap them around555555')
+        //     console.info('ADD ELE')
+        //     this.setState({
+        //         data: newData
+        //     })
+        // },2000)
+        //
+        // window.setTimeout(()=>{
+        //     const {data} = this.state
+        //     const newData = [...data]
+        //     newData.splice(0,1)
+        //     console.info('DELETE ELE')
+        //     this.setState({
+        //         data: newData
+        //     })
+        // },4000)
     }
 
     render() {
@@ -72,11 +73,17 @@ class SortableExampleEsnext extends React.Component {
             return <div className="draging">{v}{',,,,,,'}</div>
         })
         return (
-            <div className="container" ref={this.sortableContainersDecorator}>
+            <div className="container">
                 <div className="group">
                     <h2 className="group-title">Group 1</h2>
-                    <div className="group-list" ref={this.sortableGroupDecorator}>
-                        {divS}
+                    <div className="group-list" >
+                        {/*{divS}*/}
+                        <ul id="listWithHandle" ref={this.sortableGroupDecorator}>
+                            <li><span className="my-handle">::</span> list item text one</li>
+                                <li><span className="my-handle">::</span> list item text two</li>
+                        </ul>
+
+
                     </div>
                 </div>
             </div>
