@@ -27,7 +27,7 @@ class SortableExampleEsnext extends React.Component {
                 // onStart: (evt)=>{
                 //    this.onStart()
                 // }
-                handle: '.my-handle',
+                handle: '.draging',
             };
             Sortable.create(componentBackingInstance, options);
         }
@@ -70,20 +70,18 @@ class SortableExampleEsnext extends React.Component {
     render() {
         const data = this.state.data
         const divS = data.map((v)=>{
-            return <div className="draging">{v}{',,,,,,'}</div>
+            return <div className="draging">
+                        <div className="draghandle">{'DRAG ME'}</div>
+                        {v}
+                    {',,,,,,'}
+                    </div>
         })
         return (
             <div className="container">
                 <div className="group">
                     <h2 className="group-title">Group 1</h2>
-                    <div className="group-list" >
-                        {/*{divS}*/}
-                        <ul id="listWithHandle" ref={this.sortableGroupDecorator}>
-                            <li><span className="my-handle">::</span> list item text one</li>
-                                <li><span className="my-handle">::</span> list item text two</li>
-                        </ul>
-
-
+                    <div className="group-list" ref={this.sortableGroupDecorator}>
+                        {divS}
                     </div>
                 </div>
             </div>

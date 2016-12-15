@@ -29,11 +29,6 @@
   display: inline;
 }
 
-.draghandle {
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-}
 
 .my-handle {
   width: 25px;
@@ -50,7 +45,7 @@ ul {
   list-style: none;
 }
 
-.my-handle {
+.draghandle {
   cursor: move;
   cursor: -webkit-grabbing;
 }
