@@ -39,3 +39,5 @@ jspm_packages
 tmp
 !created-logfile-score.log
 .idea
+
+yarn.lock
