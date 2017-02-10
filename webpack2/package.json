@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js --env.module=XXX --env.env=XXX"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "ejs-loader": "^0.3.0",
+    "html-webpack-plugin": "^2.28.0",
     "webpack": "^2.2.1"
   }
 }

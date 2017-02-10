@@ -1,3 +1,5 @@
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 function generateConfig(envArgs) {
   console.info(envArgs.module)
@@ -5,8 +7,20 @@ function generateConfig(envArgs) {
   return {
     entry: './app.js',
     output: {
-      filename: 'bundle.js'
-    }
+      filename: '[name].[hash].[id].bundle.js',
+      publicPath: 'https://cdn.example.com/assets22333/'
+    },
+    module: {
+      loaders: [
+        { test: /\.ejs$/, loader: 'ejs-loader' }
+      ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: 'index.ejs',
+        env:'development233'
+      })
+    ]
   }
 }
 
@@ -17,7 +31,7 @@ function buildConfig(envArgs) {
 
 
 function checkEnvArgs(envArgs) {
-  const keys = ['module', 'test'];
+  const keys = ['module', 'env'];
   keys.map((key)=>{
     const value = envArgs[key];
     if(!value) {
